@@ -1,31 +1,46 @@
 .hero {
-  background-color: #101e46;
-  height: 100vh;
-  padding: 10rem 0 4rem 0;
-  text-align: start;
-  margin-bottom: 3rem;
-  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  padding: 60px 0;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
 
   .hero-title {
-    max-width: 800px;
-    margin: 0 auto;
-    gap: 3rem;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    text-align: start;
+    text-align: center;
+    margin-bottom: 40px;
+
     h1 {
-      font-size: 3rem;
-      color: white;
-    }
-    p {
-      color: white;
-      font-weight: 600;
-      font-size: 18px;
-    }
-    button{
+      font-size: 2.5rem;
       font-weight: bold;
-      margin: 0 1rem;
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #555;
+      max-width: 600px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      font-size: 1rem;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+
+      &:hover {
+        background-color: #0056b3;
+      }
     }
   }
 
@@ -33,50 +48,50 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
-    max-width: 700px;
-    margin: 3rem auto;
 
-    .image-gallery {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
+    .image-gallery,
+    .additional-images {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 20px;
+    }
 
-      .gallery-item {
-        overflow: hidden;
-        transition: transform 0.3s ease;
+    .gallery-item {
+      width: 120px;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        max-width: 100%;
+        height: auto;
+        filter: grayscale(100%);
+        transition: filter 0.3s;
 
         &:hover {
-          transform: scale(1.1);
-        }
-
-        img {
-          width: 100%;
-          height: 100%;
+          filter: grayscale(0%);
         }
       }
     }
+  }
+}
 
-    .additional-images {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
+@media (max-width: 768px) {
+  .hero-title {
+    h1 {
+      font-size: 2rem;
+    }
+    p {
+      font-size: 1rem;
+    }
+  }
 
-      .gallery-item {
-        width: 100px;
-        height: 100px;
-        transition: transform 0.3s ease;
-
-        &:hover {
-          transform: scale(1.1);
-        }
-
-        img {
-          width: 100%;
-          height: 100%;
-        }
-      }
+  .hero-content {
+    .gallery-item {
+      width: 90px;
     }
   }
 }

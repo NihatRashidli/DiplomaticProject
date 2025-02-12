@@ -1,0 +1,136 @@
+.opportunity-section {
+  text-align: center;
+  padding: 60px 20px;
+
+  .opportunity-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px;
+
+    .opportunity-badge {
+      background-color: #7a48da;
+      color: white;
+      font-size: 0.9rem;
+      font-weight: bold;
+      padding: 5px 15px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #001b54;
+      margin-top: 10px;
+    }
+  }
+
+  .opportunity-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 250px;
+
+    .challenges {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      .challenge-card {
+        display: flex;
+        align-items: center;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 40px 100px 40px 40px;
+        width: 500px;
+        text-align: left;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: translateY(-5px);
+        }
+
+        .challenge-icon {
+          font-size: 28px;
+          margin-right: 15px;
+          color: #7a48da;
+        }
+
+        .challenge-text {
+          h3 {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+          }
+          p {
+            font-size: 1.2rem;
+            color: #555;
+          }
+        }
+      }
+    }
+
+    .opportunity-image {
+      width: 650px;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 15px;
+        transition: transform 1.5s ease-in-out;
+      }
+
+      &:hover img {
+        transform: rotateY(360deg);
+      }
+    }
+
+    @keyframes rotate360 {
+      from {
+        transform: rotateY(0deg);
+      }
+      to {
+        transform: rotateY(360deg);
+      }
+    }
+
+    .auto-rotate img {
+      animation: rotate360 4s linear infinite;
+    }
+
+    @media (max-width: 768px) {
+      .opportunity-image {
+        width: 100%;
+
+        img {
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .opportunity-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+
+    .challenges {
+      width: 100%;
+      align-items: center;
+    }
+
+    .opportunity-image {
+      width: 300px;
+    }
+  }
+}
