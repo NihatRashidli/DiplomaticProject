@@ -7,10 +7,10 @@ export const registerschema = yup.object().shape({
     .min(3, "Name must be at least 3 character")
     .required("Name is required"),
 
-  username: yup
+  surname: yup
     .string()
-    .required("Username is required")
-    .lowercase("Username must be lowercase"),
+    .required("Surname is required")
+    .lowercase("Surname must be lowercase"),
   email: yup
     .string()
     .email("Please enter valid email address")

@@ -1,7 +1,7 @@
 import Joi from "joi";
 
 const LoginValidationSchema = Joi.object({
-  username: Joi.required(),
+  email: Joi.string().email().required(),
   password: Joi.string().min(6).required(),
 });
 

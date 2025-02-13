@@ -10,15 +10,15 @@ import ResetValidationSchema from "../middleware/validation/ResetValidation.js";
 
 export const register = async (req, res) => {
   try {
-    const { name, username, email, password } = req.body;
+    const { name, surname, email, password } = req.body;
 
-    const { filename } = req.file;
+    // Şəkil varsa, imageUrl yaradılır, yoxdursa default şəkil təyin edilir
+    const imageUrl = req.file ? `images/${req.file.filename}`.replace(/\\/g, "/") : "images/default.png";
 
-    const imageUrl = `images/${filename}`.replace(/\\/g, "/");
-
+    // Validation yoxlaması
     const { error } = RegisterValidationSchema.validate({
       name,
-      username,
+      surname,
       email,
       password,
     });
@@ -27,26 +27,31 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
+    // Eyni email ilə istifadəçi olub-olmadığını yoxla
     const existUser = await user.findOne({ email });
 
     if (existUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    const hasedPassword = await bcrypt.hash(password, 10);
+    // Şifrənin hash edilməsi
+    const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Yeni user yaradılır (username yoxdur)
     const newUser = new user({
       image: imageUrl,
       name,
-      username,
+      surname,
       email,
-      password: hasedPassword,
+      password: hashedPassword,
     });
 
     await newUser.save();
 
+    // Token yaradılır
     generateToken(newUser._id, res);
 
+    // Email təsdiq linki göndərilir
     const confirmLink = `${process.env.SERVER_LINK}/auth/verify`;
 
     recieveMail(newUser, confirmLink);
@@ -59,6 +64,18 @@ export const register = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const verifyEmail = async (req, res) => {
   try {
@@ -79,43 +96,76 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
+
+
+
+
 export const login = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    // Gelen JSON datanı yoxla (req.body boş gəlirsə, error qaytar)
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({ message: "Request body is empty" });
+    }
 
+    const { email, password } = req.body;
+
+    // Validation yoxlanışı
     const { error } = LoginValidationSchema.validate(req.body);
-
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const existUser = await user.findOne({ username: username });
+    // İstifadəçinin bazada olub-olmadığını yoxla
+    const existUser = await user.findOne({ email });
 
     if (!existUser) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "Email not found" });
     }
 
+    // Şifrənin doğruluğunu yoxla
     const isMatch = await bcrypt.compare(password, existUser.password);
-
     if (!isMatch) {
-      return res.status(400).json({ message: "Username or Password wrong" });
+      return res.status(400).json({ message: "Email or password is wrong" });
     }
 
+    // Token yaradıb, cookie-yə yaz
     generateToken(existUser._id, res);
 
     return res.status(200).json({
       message: "User logged in successfully",
-      existUser,
+      user: {
+        id: existUser._id,
+        name: existUser.name,
+        email: existUser.email,
+      },
     });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
+
+
+
+
+
+
+
+
+
+
+
+
 export const logout = (req, res) => {
   res.clearCookie("token");
   return res.status(200).json({ message: "User logged out successfully" });
 };
+
+
+
+
+
+
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -142,6 +192,15 @@ export const forgotPassword = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
+
+
+
+
+
 
 export const resetPassword = async (req, res) => {
   console.log();

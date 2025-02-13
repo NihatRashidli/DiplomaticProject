@@ -28,13 +28,15 @@ const Login = () => {
       actions.resetForm();
     } catch (error) {
       console.error("Login failed:", error);
-      alert(`Error: ${error.response ? error.response.data.message : error.message}`);
+      alert(
+        `Error: ${error.response ? error.response.data.message : error.message}`
+      );
     }
   };
 
   const { values, handleChange, handleSubmit, errors } = useFormik({
     initialValues: {
-      username: "",
+      email: "",
       password: "",
     },
     onSubmit: submitForm,
@@ -55,15 +57,15 @@ const Login = () => {
         <h3>Login</h3>
 
         <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <div className="text-danger">{errors.username}</div>
+          <label htmlFor="email">E-mail</label>
+          <div className="text-danger">{errors.email}</div>
           <input
             type="text"
-            id="username"
-            name="username"
+            id="email"
+            name="email"
             className="form-control"
             onChange={handleChange}
-            value={values.username}
+            value={values.email}
           />
         </div>
 

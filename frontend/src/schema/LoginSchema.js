@@ -1,9 +1,9 @@
 import * as yup from "yup";
 
 export const loginschema = yup.object().shape({
-  username: yup
+  email: yup
     .string()
-    .required("Username is required")
-    .lowercase("Username must be lowercase"),
+    .email("Please enter valid email address")
+    .required("Email is required"),
   password: yup.string().required("Password is required"),
 });

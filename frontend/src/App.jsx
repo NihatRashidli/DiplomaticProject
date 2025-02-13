@@ -46,23 +46,23 @@ const router = createBrowserRouter([
         path: "/productdetail/:id",
         element: <ProductDetail />,
       },
-      {
-        path: "/register",
-        element: <Register />,
-      },
-      {
-        path: "/login",
-        element: <Login />,
-      },
-      {
-        path: "/forgotpassword",
-        element: <ForgotPassword />,
-      },
-      {
-        path: "/resetpassword",
-        element: <Resetpassword />,
-      },
     ],
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/forgotpassword",
+    element: <ForgotPassword />,
+  },
+  {
+    path: "/resetpassword",
+    element: <Resetpassword />,
   },
 ]);
 

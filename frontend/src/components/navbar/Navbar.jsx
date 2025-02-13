@@ -11,7 +11,9 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    const res = await axios.get(`${baseUrl}/logout`);
+    const res = await axios.get(`${baseUrl}/logout`, {
+      withCredentials: true,
+    });
 
     dispatch(setUser(null));
 

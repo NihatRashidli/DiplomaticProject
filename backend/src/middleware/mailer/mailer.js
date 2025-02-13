@@ -9,11 +9,11 @@ const transporter = nodemailer.createTransport({
 });
 
 export const recieveMail = async (user, link) => {
-  const { email, username } = user;
+  const { email, surname } = user;
   await transporter.sendMail({
     from: process.env.USER_EMAIL,
     to: email,
     subject: "Verification Email",
-    html: `<h1>Hello ${username}</h1><p>Click the link below to verify your account</p><a href=${link}>Click here</a>`,
+    html: `<h1>Hello ${surname}</h1><p>Click the link below to verify your account</p><a href=${link}>Click here</a>`,
   });
 };
