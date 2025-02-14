@@ -1,82 +1,200 @@
-import React, { useState } from 'react';
-import './AnimatedInputPage.scss';
-import axios from 'axios';
+import React, { useState } from "react";
+import "./AnimatedInputPage.scss";
+import axios from "axios";
+import { useFormik } from "formik";
+import TaxCalculateSchema from "../../schema/TaxCalculate";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AnimatedInputPage = () => {
-    const [vehicleType, setVehicleType] = useState('');
-    const [engineType, setEngineType] = useState('');
-    const [invoiceValue, setInvoiceValue] = useState('');
-    const [transportCost, setTransportCost] = useState('');
-    const [otherCosts, setOtherCosts] = useState('');
-    const [engineVolume, setEngineVolume] = useState('');
-    const [productionDate, setProductionDate] = useState('');
-    const [originCountry, setOriginCountry] = useState('other');
-    const [customsFees, setCustomsFees] = useState({});
+  const [customsFees, setCustomsFees] = useState({});
 
-    const handleCalculate = async () => {
-        const totalValue = (parseFloat(invoiceValue) + parseFloat(transportCost) + parseFloat(otherCosts)) || 0;
-        try {
-            const response = await axios.post('http://localhost:5000/api/customs', {
-                vehicleType, engineType, totalValue, engineVolume, productionDate, originCountry
-            });
-            setCustomsFees(response.data);
-        } catch (error) {
-            console.error('Error calculating customs fees:', error);
-        }
-    };
+  const formik = useFormik({
+    initialValues: {
+      vehicleType: "",
+      engineType: "",
+      invoiceValue: "",
+      transportCost: "",
+      otherCosts: "",
+      engineVolume: "",
+      productionDate: "",
+      originCountry: "", // Default olaraq boş string
+    },
+    validationSchema: TaxCalculateSchema,
+    onSubmit: async (values) => {
+      const totalValue =
+        parseFloat(values.invoiceValue) +
+          parseFloat(values.transportCost) +
+          parseFloat(values.otherCosts) || 0;
+      try {
+        const response = await axios.post("http://localhost:5000/api/customs", {
+          vehicleType: values.vehicleType,
+          engineType: values.engineType,
+          totalValue,
+          engineVolume: values.engineVolume,
+          productionDate: values.productionDate,
+          originCountry: values.originCountry,
+        });
+        setCustomsFees(response.data);
+        toast.success("Gömrük dəyəri uğurla hesablandı!");
+      } catch (error) {
+        console.error("Error calculating customs fees:", error);
+        toast.error("Gömrük dəyəri hesablanarkən xəta baş verdi.");
+      }
+    },
+  });
 
-    return (
-        <div className="animated-input-page">
-            <div className="input-section">
-                <select value={vehicleType} onChange={(e) => setVehicleType(e.target.value)}>
-                    <option value="">Maşın Növü</option>
-                    <option value="car">Sedan</option>
-                    <option value="truck">Yük Maşını</option>
-                </select>
-                <select value={engineType} onChange={(e) => setEngineType(e.target.value)}>
-                    <option value="">Mühərrikin Növü</option>
-                    <option value="petrol">Benzin</option>
-                    <option value="diesel">Dizel</option>
-                    <option value="hybrid-petrol">Hibrid-benzin</option>
-                    <option value="hybrid-diesel">Hibrid-dizel</option>
-                    <option value="gas">Qaz</option>
-                    <option value="electric">Elektrik</option>
+  return (
+    <div className="animated-input-page">
+      <ToastContainer />
+      <form onSubmit={formik.handleSubmit} className="input-section">
+        <select
+          name="vehicleType"
+          value={formik.values.vehicleType}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        >
+          <option value="">Maşın Növü</option>
+          <option value="Sedan">Sedan</option>
+          <option value="Yük Maşını">Yük Maşını</option>
+        </select>
+        {formik.touched.vehicleType && formik.errors.vehicleType ? (
+          <div className="yup-tax">{formik.errors.vehicleType}</div>
+        ) : null}
 
+        <select
+          name="engineType"
+          value={formik.values.engineType}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        >
+          <option value="">Mühərrikin Növü</option>
+          <option value="Benzin">Benzin</option>
+          <option value="Dizel">Dizel</option>
+          <option value="Hibrid-benzin">Hibrid-benzin</option>
+          <option value="Hibrid-dizel">Hibrid-dizel</option>
+          <option value="Qaz">Qaz</option>
+          <option value="Elektrik">Elektrik</option>
+        </select>
+        {formik.touched.engineType && formik.errors.engineType ? (
+          <div className="yup-tax">{formik.errors.engineType}</div>
+        ) : null}
 
+        <input
+          type="number"
+          name="invoiceValue"
+          placeholder="İnvoys Dəyəri (USD)"
+          value={formik.values.invoiceValue}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          onWheel={(e) => e.target.blur()}
+          min="0"
+        />
+        {formik.touched.invoiceValue && formik.errors.invoiceValue ? (
+          <div className="yup-tax">{formik.errors.invoiceValue}</div>
+        ) : null}
 
+        <input
+          type="number"
+          name="transportCost"
+          placeholder="Nəqliyyat Xərci (USD)"
+          value={formik.values.transportCost}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          onWheel={(e) => e.target.blur()}
+          min="0"
+        />
+        {formik.touched.transportCost && formik.errors.transportCost ? (
+          <div className="yup-tax">{formik.errors.transportCost}</div>
+        ) : null}
 
-                </select>
-                <input type="number" placeholder="İnvoys Dəyəri (USD)" value={invoiceValue} onChange={(e) => setInvoiceValue(e.target.value)} />
-                <input type="number" placeholder="Nəqliyyat Xərci (USD)" value={transportCost} onChange={(e) => setTransportCost(e.target.value)} />
-                <input type="number" placeholder="Digər Xərclər (USD)" value={otherCosts} onChange={(e) => setOtherCosts(e.target.value)} />
-                <input type="number" placeholder="Mühərrikin Həcmi (cc)" value={engineVolume} onChange={(e) => setEngineVolume(e.target.value)} />
-                <input type="date" value={productionDate} onChange={(e) => setProductionDate(e.target.value)} />
-                <div>
-                    <label>
-                        <input type="radio" value="other" checked={originCountry === 'other'} onChange={() => setOriginCountry('other')} /> Digər Ölkələr
-                    </label>
-                    <label>
-                        <input type="radio" value="trade" checked={originCountry === 'trade'} onChange={() => setOriginCountry('trade')} /> Azad ticarət sazişi bağlanan istehsal olunub ordan gətirilir
-                    </label>
-                </div>
-                <button onClick={handleCalculate}>Calculate</button>
-            </div>
-            <div className="result-section">
-                <h2>Nəticə</h2>
-                <ul>
-                    <li>Vehicle Type: {vehicleType}</li>
-                    <li>Engine Type: {engineType}</li>
-                    <li>Invoice Value: {invoiceValue} AZN</li>
-                    <li>Transport Cost: {transportCost} AZN</li>
-                    <li>Other Costs: {otherCosts} AZN</li>
-                    <li>Engine Volume: {engineVolume} cc</li>
-                    <li>Production Date: {productionDate}</li>
-                    <li>Origin Country: {originCountry}</li>
-                    <li>Total Customs Fees: {customsFees.total || 0} AZN</li>
-                </ul>
-            </div>
+        <input
+          type="number"
+          name="otherCosts"
+          placeholder="Digər Xərclər (USD)"
+          value={formik.values.otherCosts}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          onWheel={(e) => e.target.blur()}
+          min="0"
+        />
+        {formik.touched.otherCosts && formik.errors.otherCosts ? (
+          <div className="yup-tax">{formik.errors.otherCosts}</div>
+        ) : null}
+
+        <input
+          type="number"
+          name="engineVolume"
+          placeholder="Mühərrikin Həcmi (cc)"
+          value={formik.values.engineVolume}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          onWheel={(e) => e.target.blur()}
+          min="0"
+        />
+        {formik.touched.engineVolume && formik.errors.engineVolume ? (
+          <div className="yup-tax">{formik.errors.engineVolume}</div>
+        ) : null}
+
+        <input
+          type="date"
+          name="productionDate"
+          value={formik.values.productionDate}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.productionDate && formik.errors.productionDate ? (
+          <div className="yup-tax">{formik.errors.productionDate}</div>
+        ) : null}
+
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="originCountry"
+              value="Digər Ölkələr"
+              checked={formik.values.originCountry === "other"}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />{" "}
+            Digər Ölkələr
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="originCountry"
+              value="Vergidən Azad"
+              checked={formik.values.originCountry === "trade"}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />{" "}
+            Azad ticarət sazişi bağlanan istehsal olunub ordan gətirilir
+          </label>
         </div>
-    );
+        {formik.touched.originCountry && formik.errors.originCountry ? (
+          <div className="yup-tax">{formik.errors.originCountry}</div>
+        ) : null}
+
+        <button type="submit">Calculate</button>
+      </form>
+      <div className="result-section">
+        <h2>Nəticə</h2>
+        <ul>
+          <li>Maşın Növü: {formik.values.vehicleType}</li>
+          <li>Mühərrik Növü: {formik.values.engineType}</li>
+          <li>Invoys Dəyəri: {formik.values.invoiceValue} AZN</li>
+          <li>Nəqliyyat Xərci: {formik.values.transportCost} AZN</li>
+          <li>Digər Xərclər: {formik.values.otherCosts} AZN</li>
+          <li>Mühərrik Həcmi: {formik.values.engineVolume} cc</li>
+          <li>İstehsal Tarixi: {formik.values.productionDate}</li>
+          <li>Digər Ölkələr: {formik.values.originCountry}</li>
+          <li>
+            Ümumi Gömrük Dəyəri: {(customsFees.total || 0).toFixed(2)} AZN
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
 };
 
 export default AnimatedInputPage;

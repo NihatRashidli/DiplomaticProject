@@ -1,11 +1,11 @@
 .animated-input-page {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     padding: 20px;
     background-color: #f4f4f4;
 
     .input-section, .result-section {
-        width: 48%;
+        width: 40%;
         padding: 20px;
         background: white;
         border-radius: 8px;
@@ -21,6 +21,16 @@
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+
+        input[type="radio"] {
+            margin-left:25px;
+
+        }
+
+        input[type="radio"]:checked {
+            background-color: #007bff;
+            border-color: #007bff;
         }
 
         button {
@@ -53,4 +63,9 @@
             color: #d9534f;
         }
     }
+}
+
+.yup-tax{
+    color: red;
+    margin: 0;
 }
