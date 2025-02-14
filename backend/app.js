@@ -2,6 +2,8 @@ import express from "express";
 import "dotenv/config";
 import cors from "cors";
 import "./src/db/dbConnection.js";
+import inputRoutes from './src/routes/inputRoutes.js';
+import customsRoutes from './src/routes/customsRoutes.js';
 import productRouter from "./src/routes/productRouter.js";
 import userRouter from "./src/routes/userRouter.js";
 import cookieParser from "cookie-parser";
@@ -20,6 +22,8 @@ app.use(
 app.use(cookieParser());
 
 //routes
+app.use("/api/inputs", inputRoutes)
+app.use("/api/customs", customsRoutes)
 app.use("/api/products", productRouter);
 app.use("/auth", userRouter);
 app.use("/images", express.static("src/images"));

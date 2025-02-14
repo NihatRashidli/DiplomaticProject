@@ -1,8 +1,11 @@
 import React from 'react'
+import AnimatedInputPage from '../components/animatedInput/AnimatedInputPage'
 
 const Category = () => {
   return (
-    <div>Category</div>
+    <div>
+      <AnimatedInputPage />
+    </div>
   )
 }
 
