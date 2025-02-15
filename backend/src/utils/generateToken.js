@@ -10,3 +10,4 @@ export const generateToken = (id, res, tokenName = "token") => {
 
   return token;
 };
+

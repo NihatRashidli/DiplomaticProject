@@ -28,7 +28,9 @@ const Resetpassword = () => {
       actions.resetForm();
     } catch (error) {
       console.error("Password reset failed:", error);
-      alert(`Error: ${error.response ? error.response.data.message : error.message}`);
+      alert(
+        `Error: ${error.response ? error.response.data.message : error.message}`
+      );
     }
   };
 

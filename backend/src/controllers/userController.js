@@ -7,13 +7,16 @@ import RegisterValidationSchema from "../middleware/validation/RegisterValidatio
 import LoginValidationSchema from "../middleware/validation/LoginValidation.js";
 import ForgotValidationSchema from "../middleware/validation/ForgotValidation.js";
 import ResetValidationSchema from "../middleware/validation/ResetValidation.js";
+import User from "../models/userModel.js";
 
 export const register = async (req, res) => {
   try {
     const { name, surname, email, password } = req.body;
 
     // Şəkil varsa, imageUrl yaradılır, yoxdursa default şəkil təyin edilir
-    const imageUrl = req.file ? `images/${req.file.filename}`.replace(/\\/g, "/") : "images/default.png";
+    const imageUrl = req.file
+      ? `images/${req.file.filename}`.replace(/\\/g, "/")
+      : "images/default.png";
 
     // Validation yoxlaması
     const { error } = RegisterValidationSchema.validate({
@@ -65,22 +68,10 @@ export const register = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 export const verifyEmail = async (req, res) => {
   try {
     const token = req.cookies.token;
-    
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const updatedVerify = await user.findByIdAndUpdate(
@@ -96,10 +87,6 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-
-
-
-
 export const login = async (req, res) => {
   try {
     // Gelen JSON datanı yoxla (req.body boş gəlirsə, error qaytar)
@@ -108,7 +95,6 @@ export const login = async (req, res) => {
     }
 
     const { email, password } = req.body;
-
     // Validation yoxlanışı
     const { error } = LoginValidationSchema.validate(req.body);
     if (error) {
@@ -117,7 +103,6 @@ export const login = async (req, res) => {
 
     // İstifadəçinin bazada olub-olmadığını yoxla
     const existUser = await user.findOne({ email });
-
     if (!existUser) {
       return res.status(400).json({ message: "Email not found" });
     }
@@ -130,6 +115,7 @@ export const login = async (req, res) => {
 
     // Token yaradıb, cookie-yə yaz
     generateToken(existUser._id, res);
+    console.log(existUser.token);
 
     return res.status(200).json({
       message: "User logged in successfully",
@@ -137,6 +123,7 @@ export const login = async (req, res) => {
         id: existUser._id,
         name: existUser.name,
         email: existUser.email,
+        token: generateToken(existUser._id, res),
       },
     });
   } catch (error) {
@@ -144,28 +131,10 @@ export const login = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
 export const logout = (req, res) => {
   res.clearCookie("token");
   return res.status(200).json({ message: "User logged out successfully" });
 };
-
-
-
-
-
-
 
 export const forgotPassword = async (req, res) => {
   try {
@@ -192,15 +161,6 @@ export const forgotPassword = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-
-
-
-
-
-
-
-
 
 export const resetPassword = async (req, res) => {
   console.log();
@@ -243,5 +203,17 @@ export const resetPassword = async (req, res) => {
     return res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching user data" });
   }
 };

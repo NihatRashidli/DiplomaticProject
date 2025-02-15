@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.scss";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { setUser } from "../../redux/features/userSlice";
 
 const Navbar = () => {
   const baseUrl = "http://localhost:5000/auth";
@@ -10,22 +13,51 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`${baseUrl}/user`, {
+          withCredentials: true,
+        });
+
+        if (res.status === 200) {
+          dispatch(setUser(res.data));
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    const cookies = document.cookie;
+    if (cookies.includes("token=")) {
+      fetchUser();
+    }
+  }, [dispatch]);
+
   const handleLogout = async () => {
-    const res = await axios.get(`${baseUrl}/logout`, {
-      withCredentials: true,
-    });
+    try {
+      const res = await axios.post(
+        `${baseUrl}/logout`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
 
-    dispatch(setUser(null));
-
-    if (res.status === 200) {
-      alert("Logout successful");
-    } else {
-      alert("Logout failed");
+      if (res.status === 200) {
+        dispatch(setUser(null));
+        toast.success("Logout successful");
+      } else {
+        toast.error("Logout failed");
+      }
+    } catch (error) {
+      toast.error("Logout failed");
     }
   };
 
   return (
     <div className="navbar-section">
+      <ToastContainer />
       <div className="container">
         <div className="navbar">
           <div className="logo">DataSnipper</div>
@@ -57,12 +89,14 @@ const Navbar = () => {
                 data-bs-toggle="dropdown"
               >
                 <i className="fa-solid fa-user"></i>
-                Daxil ol
+                {user && user.isVerified
+                  ? `${user.name} ${user.surname}`
+                  : "Daxil ol"}
               </button>
               <ul className="dropdown-menu">
                 {user ? (
                   <li onClick={handleLogout}>
-                    <Link className="dropdown-item logout " to="/">
+                    <Link className="dropdown-item logout" to="/">
                       Logout
                     </Link>
                   </li>
