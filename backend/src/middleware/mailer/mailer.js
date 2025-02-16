@@ -14,6 +14,6 @@ export const recieveMail = async (user, link) => {
     from: process.env.USER_EMAIL,
     to: email,
     subject: "Verification Email",
-    html: `<h1>Hello ${surname}</h1><p>Click the link below to verify your account</p><a href=${link}>Click here</a>`,
+    html: `<h1>Hello ${surname}</h1><p>Click the link below to verify your account</p><a href="${link}" target="_blank">Click here</a>`,
   });
 };

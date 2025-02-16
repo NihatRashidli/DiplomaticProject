@@ -89,9 +89,13 @@ const Navbar = () => {
                 data-bs-toggle="dropdown"
               >
                 <i className="fa-solid fa-user"></i>
-                {user && user.isVerified
-                  ? `${user.name} ${user.surname}`
-                  : "Daxil ol"}
+                {user && user.isVerified ? (
+                  <span>
+                    {user.name} {user.surname}
+                  </span>
+                ) : (
+                  "Daxil ol"
+                )}
               </button>
               <ul className="dropdown-menu">
                 {user ? (

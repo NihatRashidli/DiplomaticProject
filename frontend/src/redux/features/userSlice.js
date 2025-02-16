@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 const initialState = {
   user: null,
@@ -10,7 +9,15 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload
+        ? {
+            id: action.payload.id,
+            name: action.payload.name,
+            surname: action.payload.surname,
+            email: action.payload.email,
+            isVerified: action.payload.isVerified,
+          }
+        : null;
     },
   },
 });

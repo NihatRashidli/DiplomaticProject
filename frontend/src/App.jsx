@@ -12,6 +12,7 @@ import Register from "./pages/auth/register/Register";
 import Login from "./pages/auth/login/Login";
 import ForgotPassword from "./pages/auth/forgotpassword/ForgotPassword";
 import Resetpassword from "./pages/auth/resetpassword/Resetpassword";
+import Verify from "./pages/auth/verify/Verify";
 
 const router = createBrowserRouter([
   {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
   {
     path: "/resetpassword",
     element: <Resetpassword />,
+  },
+  {
+    path: "/verify",
+    element: <Verify />,
   },
 ]);
 

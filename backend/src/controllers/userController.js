@@ -13,12 +13,10 @@ export const register = async (req, res) => {
   try {
     const { name, surname, email, password } = req.body;
 
-    // Şəkil varsa, imageUrl yaradılır, yoxdursa default şəkil təyin edilir
     const imageUrl = req.file
       ? `images/${req.file.filename}`.replace(/\\/g, "/")
       : "images/default.png";
 
-    // Validation yoxlaması
     const { error } = RegisterValidationSchema.validate({
       name,
       surname,
@@ -30,17 +28,14 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    // Eyni email ilə istifadəçi olub-olmadığını yoxla
     const existUser = await user.findOne({ email });
 
     if (existUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Şifrənin hash edilməsi
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Yeni user yaradılır (username yoxdur)
     const newUser = new user({
       image: imageUrl,
       name,
@@ -51,16 +46,16 @@ export const register = async (req, res) => {
 
     await newUser.save();
 
-    // Token yaradılır
-    generateToken(newUser._id, res);
+    // ✅ Email təsdiqləmə üçün token yaradılır
+    const jwtToken = generateToken(newUser._id); // Tokeni cookie-də yox, URL üçün qaytarırıq
 
-    // Email təsdiq linki göndərilir
-    const confirmLink = `${process.env.SERVER_LINK}/auth/verify`;
+    // ✅ Email təsdiqləmə linki
+    const confirmLink = `${process.env.CLIENT_LINK}/verify?token=${jwtToken}`;
 
     recieveMail(newUser, confirmLink);
 
     return res.status(201).json({
-      message: "User created successfully",
+      message: "User created successfully. Please check your email.",
       newUser,
     });
   } catch (error) {
@@ -70,20 +65,29 @@ export const register = async (req, res) => {
 
 export const verifyEmail = async (req, res) => {
   try {
-    const token = req.cookies.token;
+    const { token } = req.query; // URL-dən tokeni al
 
+    if (!token) {
+      return res.status(400).json({ message: "Token missing" });
+    }
+
+    // ✅ Tokeni yoxla
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+    // ✅ İstifadəçini tap və təsdiqlə
     const updatedVerify = await user.findByIdAndUpdate(
       { _id: decoded.id },
-      { isVerified: true }
+      { isVerified: true },
+      { new: true }
     );
 
-    if (updatedVerify) {
-      return res.redirect(`${process.env.CLIENT_LINK}/login`);
+    if (!updatedVerify) {
+      return res.status(404).json({ message: "User not found" });
     }
+
+    return res.redirect(`${process.env.CLIENT_LINK}/login`);
   } catch (error) {
-    return res.status(400).json({ message: "Token not valid or expaired in" });
+    return res.status(400).json({ message: "Invalid or expired token" });
   }
 };
 
@@ -122,10 +126,13 @@ export const login = async (req, res) => {
       user: {
         id: existUser._id,
         name: existUser.name,
+        surname: existUser.surname,
         email: existUser.email,
+        isVerified: existUser.isVerified,
         token: generateToken(existUser._id, res),
       },
     });
+    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -208,12 +215,22 @@ export const resetPassword = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select("-password");
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id).select("-password");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ message: "Error fetching user data" });
   }
 };
+
+
