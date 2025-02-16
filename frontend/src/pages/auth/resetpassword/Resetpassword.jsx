@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { resetschema } from "../../../schema/ResetSchema";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -7,6 +7,17 @@ import axios from "axios";
 const Resetpassword = () => {
   const baseUrl = `http://localhost:5000/auth`;
   const navigate = useNavigate();
+  const [token, setToken] = useState("");
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tokenFromUrl = urlParams.get("token");
+    if (tokenFromUrl) {
+      setToken(tokenFromUrl);
+    } else {
+      alert("Token not found!");
+    }
+  }, []);
 
   const submitForm = async (values, actions) => {
     try {
@@ -14,9 +25,7 @@ const Resetpassword = () => {
 
       const result = await axios.post(
         `${baseUrl}/resetpassword`,
-        {
-          password,
-        },
+        { password, token },
         { withCredentials: true }
       );
       if (result.status === 200) {
@@ -46,14 +55,13 @@ const Resetpassword = () => {
   return (
     <div className="container">
       <form
-        action=""
         className="form"
         onSubmit={(e) => {
           e.preventDefault();
           handleSubmit();
         }}
       >
-        <h3>ResetPassword</h3>
+        <h3>Reset Password</h3>
 
         <div className="form-group">
           <label htmlFor="password">New password</label>

@@ -18,7 +18,7 @@ userRouter.get("/verify", verifyEmail);
 userRouter.post("/login", login);
 userRouter.post("/logout", logout);
 userRouter.post("/forgotpassword", forgotPassword);
-userRouter.get("/resetpassword", resetPassword);
+userRouter.post("/resetpassword", resetPassword);
 userRouter.get("/user", protect, getUser);
 
 export default userRouter;

@@ -153,13 +153,13 @@ export const forgotPassword = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
+    
     const existUser = await user.findOne({ email });
+    
+    const token = generateToken(existUser._id, res, "resetToken");
+    if (!existUser) return res.status(404).json({ message: "User not found" }); 
 
-    if (!existUser) return res.status(404).json({ message: "User not found" });
-
-    generateToken(existUser._id, res, "resetToken");
-
-    const resetLink = `${process.env.CLIENT_LINK}/resetpassword`;
+    const resetLink = `${process.env.CLIENT_LINK}/resetpassword?token=${token}`;
 
     recieveMail(existUser, resetLink);
 
@@ -170,48 +170,36 @@ export const forgotPassword = async (req, res) => {
 };
 
 export const resetPassword = async (req, res) => {
-  console.log();
-  console.log(req.body);
-
   try {
-    const { password } = req.body;
+    const { password, token } = req.body;
 
-    const { error } = ResetValidationSchema.validate({
-      password,
-    });
+    console.log(token);
+    if (!token) {
+      return res.status(400).json({ message: "No token found, request a new one" });
+    }
+
+    const { error } = ResetValidationSchema.validate({ password });
 
     if (error) {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const resetToken = req.cookies.resetToken;
-
-    if (!resetToken) {
-      return res
-        .status(400)
-        .json({ message: "No token found, request new one" });
-    }
-
-    const decoded = jwt.verify(resetToken, process.env.JWT_SECRET);
-
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const existUser = await user.findById(decoded.id);
 
     if (!existUser) {
-      return res.status(400).json({ message: "Token not valid or expaired" });
+      return res.status(400).json({ message: "Token not valid or expired" });
     }
-    const hashedPassword = await bcrypt.hash(password, 10);
 
-    existUser.password = hashedPassword;
-
+    existUser.password = await bcrypt.hash(password, 10);
     await existUser.save();
-
-    res.clearCookie("resetToken");
 
     return res.status(200).json({ message: "Password reset successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
+
 
 export const getUser = async (req, res) => {
   try {

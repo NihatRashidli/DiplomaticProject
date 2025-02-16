@@ -6,6 +6,7 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { setUser } from "../../redux/features/userSlice";
+import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const baseUrl = "http://localhost:5000/auth";
@@ -82,6 +83,9 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="wrapper">
+            <Link to="/profile">
+              <FaUserCircle size={24} style={{ cursor: "pointer" }} />
+            </Link>
             <div className="dropdown">
               <button
                 className="btn btn-light dropdown-toggle"

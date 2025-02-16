@@ -4,7 +4,7 @@ import storage from "redux-persist/lib/storage";
 import productSlice from "../features/ProductSlice";
 import basketSlice from "../features/BasketSlice";
 import wishlistSlice from "../features/WishlistSlice";
-import userSlice from "../features/userSlice"; // burada named export yox idi, default export kimi düzəltdim
+import userSlice from "../features/userSlice";
 
 const persistProductConfig = {
   key: "product",
@@ -45,7 +45,7 @@ export const store = configureStore({
     products: persistedProductReducer,
     basket: persistedBasketReducer,
     wishlist: persistedWishlistReducer,
-    user: persistedUserReducer, // buraya persist olunan userSlice əlavə edildi
+    user: persistedUserReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

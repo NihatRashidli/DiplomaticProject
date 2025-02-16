@@ -22,7 +22,7 @@ const Verify = () => {
 
         if (response.status === 200) {
           alert("Email verified successfully!");
-          navigate("/login"); // Login səhifəsinə yönləndir
+          navigate("/login");
         }
       } catch (error) {
         console.error("Verification failed:", error);
