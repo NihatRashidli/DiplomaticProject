@@ -1,72 +1,87 @@
 .profile-container {
-    max-width: 500px;
-    margin: auto;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    background: #fff;
-  
-    h1 {
-      color: #333;
-    }
-  
-    .user-info, .reset-password, .document-history {
-      margin-bottom: 20px;
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background: #f9f9f9;
-      text-align: left;
-  
-      h2 {
-        margin-bottom: 10px;
-        color: #222;
-      }
-  
-      p {
-        font-size: 14px;
-        color: #555;
-        margin: 5px 0;
-      }
-    }
-  
-    .reset-password {
-      input {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-      }
-    }
-  
-    button {
-      margin-top: 10px;
-      padding: 10px 15px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background 0.3s ease;
-    }
-  
-    .reset-btn {
-      background: #007bff;
-      color: white;
-  
-      &:hover {
-        background: #0056b3;
-      }
-    }
-  
-    .logout-btn {
-      background: red;
-      color: white;
-  
-      &:hover {
-        background: darkred;
-      }
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background: #fff;
+
+  img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #007bff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
     }
   }
-  
+
+  h1 {
+    color: #333;
+  }
+
+  .user-info,
+  .reset-password,
+  .document-history {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    text-align: left;
+
+    h2 {
+      margin-bottom: 10px;
+      color: #222;
+    }
+
+    p {
+      font-size: 14px;
+      color: #555;
+      margin: 5px 0;
+    }
+  }
+
+  .reset-password {
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+  }
+
+  button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+  }
+
+  .reset-btn {
+    background: #007bff;
+    color: white;
+
+    &:hover {
+      background: #0056b3;
+    }
+  }
+
+  .logout-btn {
+    background: red;
+    color: white;
+
+    &:hover {
+      background: darkred;
+    }
+  }
+}

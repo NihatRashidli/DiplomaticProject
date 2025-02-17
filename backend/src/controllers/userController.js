@@ -93,33 +93,20 @@ export const verifyEmail = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    // Gelen JSON datanı yoxla (req.body boş gəlirsə, error qaytar)
-    if (!req.body || Object.keys(req.body).length === 0) {
-      return res.status(400).json({ message: "Request body is empty" });
-    }
-
     const { email, password } = req.body;
-    // Validation yoxlanışı
-    const { error } = LoginValidationSchema.validate(req.body);
-    if (error) {
-      return res.status(400).json({ message: error.details[0].message });
-    }
+    const existUser = await User.findOne({ email });
 
-    // İstifadəçinin bazada olub-olmadığını yoxla
-    const existUser = await user.findOne({ email });
     if (!existUser) {
       return res.status(400).json({ message: "Email not found" });
     }
 
-    // Şifrənin doğruluğunu yoxla
     const isMatch = await bcrypt.compare(password, existUser.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Email or password is wrong" });
     }
 
-    // Token yaradıb, cookie-yə yaz
+    // ✅ Token yaradılır və cookie-ə yazılır
     generateToken(existUser._id, res);
-    console.log(existUser.token);
 
     return res.status(200).json({
       message: "User logged in successfully",
@@ -129,10 +116,8 @@ export const login = async (req, res) => {
         surname: existUser.surname,
         email: existUser.email,
         isVerified: existUser.isVerified,
-        token: generateToken(existUser._id, res),
       },
     });
-    
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -153,11 +138,10 @@ export const forgotPassword = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    
     const existUser = await user.findOne({ email });
-    
+
     const token = generateToken(existUser._id, res, "resetToken");
-    if (!existUser) return res.status(404).json({ message: "User not found" }); 
+    if (!existUser) return res.status(404).json({ message: "User not found" });
 
     const resetLink = `${process.env.CLIENT_LINK}/resetpassword?token=${token}`;
 
@@ -175,7 +159,9 @@ export const resetPassword = async (req, res) => {
 
     console.log(token);
     if (!token) {
-      return res.status(400).json({ message: "No token found, request a new one" });
+      return res
+        .status(400)
+        .json({ message: "No token found, request a new one" });
     }
 
     const { error } = ResetValidationSchema.validate({ password });
@@ -200,7 +186,6 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-
 export const getUser = async (req, res) => {
   try {
     const token = req.cookies.token;
@@ -221,4 +206,47 @@ export const getUser = async (req, res) => {
   }
 };
 
+export const uploadProfilePicture = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const imageUrl = `images/${req.file.filename}`.replace(/\\/g, "/");
 
+    const updatedUser = await user.findByIdAndUpdate(
+      userId,
+      { image: imageUrl },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({
+      message: "Profile picture updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({
+      id: user._id,
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      isVerified: user.isVerified,
+      profilePicture: user.profilePicture,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

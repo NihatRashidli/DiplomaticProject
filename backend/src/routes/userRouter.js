@@ -7,6 +7,7 @@ import {
   resetPassword,
   verifyEmail,
   getUser,
+  uploadProfilePicture,
 } from "../controllers/userController.js";
 import upload from "../upload/upload.js";
 import { protect } from "../middleware/auth/authMiddleware.js";
@@ -20,5 +21,6 @@ userRouter.post("/logout", logout);
 userRouter.post("/forgotpassword", forgotPassword);
 userRouter.post("/resetpassword", resetPassword);
 userRouter.get("/user", protect, getUser);
+userRouter.post("/uploadProfilePicture", protect, upload.single("image"), uploadProfilePicture);
 
 export default userRouter;

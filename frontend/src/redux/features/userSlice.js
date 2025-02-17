@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const storedUser = localStorage.getItem("user")
+  ? JSON.parse(localStorage.getItem("user"))
+  : null;
+
 const initialState = {
-  user: null,
+  user: storedUser,
+  users: [],
 };
 
 export const userSlice = createSlice({
@@ -9,19 +14,17 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload
-        ? {
-            id: action.payload.id,
-            name: action.payload.name,
-            surname: action.payload.surname,
-            email: action.payload.email,
-            isVerified: action.payload.isVerified,
-          }
-        : null;
+      state.user = action.payload;
+      localStorage.setItem("user", JSON.stringify(action.payload));
+    },
+    updateProfilePicture: (state, action) => {
+      if (state.user) {
+        state.user.profilePicture = action.payload;
+      }
     },
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, updateProfilePicture } = userSlice.actions;
 
 export default userSlice.reducer;

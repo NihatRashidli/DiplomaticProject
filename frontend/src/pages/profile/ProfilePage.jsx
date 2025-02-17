@@ -1,16 +1,26 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useEffect } from "react";
 import axios from "axios";
 import { setUser } from "../../redux/features/userSlice";
 import "./Profile.scss";
 
 const ProfilePage = () => {
   const user = useSelector((state) => state.user.user);
+  console.log("Redux Store User:", user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [profilePicture, setProfilePicture] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/auth/user", { withCredentials: true })
+      .then((res) => console.log("User data:", res.data))
+      .catch((err) => console.log("Error fetching user:", err));
+  }, []);
 
   const handleLogout = async () => {
     try {
@@ -63,6 +73,65 @@ const ProfilePage = () => {
     }
   };
 
+  const handleProfilePictureUpload = async () => {
+    if (!profilePicture) {
+      alert("Please select a profile picture to upload.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", profilePicture);
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/auth/uploadProfilePicture",
+        formData,
+        { withCredentials: true }
+      );
+
+      console.log("Updated User Data:", res.data); // ✅ Backend cavabını yoxla
+
+      if (res.status === 200) {
+        alert("Profile picture updated successfully!");
+        dispatch(
+          setUser({
+            id: res.data.user._id, // 🔥 `_id`-i `id` kimi göndər
+            name: res.data.user.name,
+            surname: res.data.user.surname,
+            email: res.data.user.email,
+            profilePicture: res.data.user.image, // 🔥 `image` sahəsini profilePicture kimi qeyd et
+            isVerified: res.data.user.isVerified,
+          })
+        );
+      } else {
+        alert("Profile picture update failed.");
+      }
+    } catch (error) {
+      alert("Profile picture update failed.");
+    }
+  };
+
+  const handleProfilePictureChange = (e) => {
+    setProfilePicture(e.target.files[0]);
+  };
+
+  const uploadProfilePicture = async (file) => {
+    const formData = new FormData();
+    formData.append("profilePicture", file);
+
+    const response = await fetch(
+      "http://localhost:5000/auth/uploadProfilePicture",
+      {
+        method: "POST",
+        body: formData,
+        credentials: "include", // 🎯 Cookie göndərmək üçün vacibdir
+      }
+    );
+
+    const data = await response.json();
+    console.log(data);
+  };
+
   return (
     <div className="profile-container">
       <h1>Profil</h1>
@@ -79,6 +148,23 @@ const ProfilePage = () => {
             <p>
               <strong>Email:</strong> {user.email}
             </p>
+
+            {/* Profil Şəkili Göstərilir */}
+            {user.profilePicture && (
+              <div className="profile-picture">
+                <img src={user.profilePicture} alt="Profil Şəkli" />
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="profilePicture">Profil Şəkli:</label>
+              <input
+                type="file"
+                id="profilePicture"
+                onChange={handleProfilePictureChange}
+              />
+              <button onClick={handleProfilePictureUpload}>Yüklə</button>
+            </div>
           </>
         ) : (
           <p>Məlumat tapılmadı.</p>
