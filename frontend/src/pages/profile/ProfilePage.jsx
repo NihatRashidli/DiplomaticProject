@@ -89,17 +89,17 @@ const ProfilePage = () => {
         { withCredentials: true }
       );
 
-      console.log("Updated User Data:", res.data); // ✅ Backend cavabını yoxla
+      console.log("Updated User Data:", res.data);
 
       if (res.status === 200) {
         alert("Profile picture updated successfully!");
         dispatch(
           setUser({
-            id: res.data.user._id, // 🔥 `_id`-i `id` kimi göndər
+            id: res.data.user._id,
             name: res.data.user.name,
             surname: res.data.user.surname,
             email: res.data.user.email,
-            profilePicture: res.data.user.image, // 🔥 `image` sahəsini profilePicture kimi qeyd et
+            profilePicture: res.data.user.image,
             isVerified: res.data.user.isVerified,
           })
         );
@@ -120,11 +120,11 @@ const ProfilePage = () => {
     formData.append("profilePicture", file);
 
     const response = await fetch(
-      "http://localhost:5000/auth/uploadProfilePicture",
+      `http://localhost:5000/auth/uploadProfilePicture`,
       {
         method: "POST",
         body: formData,
-        credentials: "include", // 🎯 Cookie göndərmək üçün vacibdir
+        credentials: "include",
       }
     );
 
@@ -149,12 +149,12 @@ const ProfilePage = () => {
               <strong>Email:</strong> {user.email}
             </p>
 
-            {/* Profil Şəkili Göstərilir */}
-            {user.profilePicture && (
-              <div className="profile-picture">
-                <img src={user.profilePicture} alt="Profil Şəkli" />
-              </div>
-            )}
+            <div className="profile-picture">
+              <img
+                src={`http://localhost:5000/${user.image}`}
+                alt="Profil Şəkli"
+              />
+            </div>
 
             <div>
               <label htmlFor="profilePicture">Profil Şəkli:</label>
