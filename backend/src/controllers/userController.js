@@ -47,7 +47,7 @@ export const register = async (req, res) => {
     await newUser.save();
 
     // ✅ Email təsdiqləmə üçün token yaradılır
-    const jwtToken = generateToken(newUser._id); // Tokeni cookie-də yox, URL üçün qaytarırıq
+    const jwtToken = generateToken(newUser._id, res); // Tokeni cookie-də yox, URL üçün qaytarırıq
 
     // ✅ Email təsdiqləmə linki
     const confirmLink = `${process.env.CLIENT_LINK}/verify?token=${jwtToken}`;
