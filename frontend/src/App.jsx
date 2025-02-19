@@ -14,6 +14,7 @@ import ForgotPassword from "./pages/auth/forgotpassword/ForgotPassword";
 import Resetpassword from "./pages/auth/resetpassword/Resetpassword";
 import Verify from "./pages/auth/verify/Verify";
 import ProfilePage from "./pages/profile/ProfilePage";
+import DocumentStorage from "./pages/document/DocumentStorage";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: "/profile",
         element: <ProfilePage />,
+      },
+      {
+        path: "/documentstorage",
+        element: <DocumentStorage />,
       },
     ],
   },

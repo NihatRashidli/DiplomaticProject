@@ -7,6 +7,7 @@ import customsRoutes from './src/routes/customsRoutes.js';
 import productRouter from "./src/routes/productRouter.js";
 import userRouter from "./src/routes/userRouter.js";
 import cookieParser from "cookie-parser";
+import documentRouter from "./src/routes/documentRoutes.js";
 
 const port = process.env.PORT || 5001;
 const app = express();
@@ -27,6 +28,7 @@ app.use("/api/customs", customsRoutes)
 app.use("/api/products", productRouter);
 app.use("/auth", userRouter);
 app.use("/images", express.static("src/images"));
+app.use("/documents", documentRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World");

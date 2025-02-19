@@ -5,6 +5,7 @@ import productSlice from "../features/ProductSlice";
 import basketSlice from "../features/BasketSlice";
 import wishlistSlice from "../features/WishlistSlice";
 import userSlice from "../features/userSlice";
+import documentSlice from "../features/documentSlice"; // DocumentSlice əlavə edildi
 
 const persistProductConfig = {
   key: "product",
@@ -26,6 +27,11 @@ const persistUserConfig = {
   storage,
 };
 
+const persistDocumentConfig = {
+  key: "documents",
+  storage,
+};
+
 const persistedProductReducer = persistReducer(
   persistProductConfig,
   productSlice
@@ -40,12 +46,18 @@ const persistedBasketReducer = persistReducer(persistBasketConfig, basketSlice);
 
 const persistedUserReducer = persistReducer(persistUserConfig, userSlice);
 
+const persistedDocumentReducer = persistReducer(
+  persistDocumentConfig,
+  documentSlice
+);
+
 export const store = configureStore({
   reducer: {
     products: persistedProductReducer,
     basket: persistedBasketReducer,
     wishlist: persistedWishlistReducer,
     user: persistedUserReducer,
+    documents: persistedDocumentReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

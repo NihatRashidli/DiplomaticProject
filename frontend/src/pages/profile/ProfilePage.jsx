@@ -170,24 +170,6 @@ const ProfilePage = () => {
           <p>Məlumat tapılmadı.</p>
         )}
       </div>
-
-      <div className="reset-password">
-        <h2>Şifrə Yenilə</h2>
-        <input
-          type="password"
-          placeholder="Yeni şifrə"
-          value={newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Yeni şifrəni təsdiqlə"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-        <button onClick={handleResetPassword}>Şifrəni Yenilə</button>
-      </div>
-
       <div className="document-history">
         <h2>Dokument Keçmişi</h2>
         <ul>

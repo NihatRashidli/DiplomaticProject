@@ -81,6 +81,9 @@ const Navbar = () => {
             <li className="navlist-item">
               <Link to="/admin">Admin</Link>
             </li>
+            <li className="navlist-item">
+              <Link to="/documentstorage">Document Storage</Link>
+            </li>
           </ul>
           <div className="wrapper">
             <Link to="/profile">
