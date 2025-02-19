@@ -16,10 +16,14 @@ export const uploadDocument = createAsyncThunk(
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await axios.post("http://localhost:5000/documents", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      "http://localhost:5000/documents",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
+      }
+    );
 
     return response.data;
   }
@@ -30,7 +34,9 @@ const documentSlice = createSlice({
   initialState: { documents: [], loading: false, error: null },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchDocuments.pending, (state) => { state.loading = true; })
+      .addCase(fetchDocuments.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(fetchDocuments.fulfilled, (state, action) => {
         state.loading = false;
         state.documents = action.payload;

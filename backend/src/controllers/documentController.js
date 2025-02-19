@@ -2,7 +2,7 @@ import Document from "../models/documentModel.js";
 
 export const getDocuments = async (req, res) => {
   try {
-    const documents = await Document.find({ user: req.user._id }); // İstifadəçiyə aid sənədlər
+    const documents = await Document.find({ user: req.user._id });
     res.json(documents);
   } catch (error) {
     res.status(500).json({ message: "Error fetching documents" });

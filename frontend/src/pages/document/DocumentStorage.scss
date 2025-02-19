@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
+
+$primary-color: #007bff;
+$secondary-color: #f8f9fa;
+$text-color: #333;
+$border-radius: 8px;
+$transition: 0.3s ease-in-out;
+
+.container-document {
+  font-family: "Inter", sans-serif;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: $border-radius;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+
+  h2 {
+    color: $primary-color;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+
+  // 🔵 Fayl yükləmə hissəsi
+  .file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+
+    input {
+      display: none;
+    }
+
+    label {
+      background: $primary-color;
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: $border-radius;
+      cursor: pointer;
+      transition: $transition;
+      font-weight: 600;
+
+      &:hover {
+        background: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  button {
+    background: $primary-color;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: $border-radius;
+    font-weight: 600;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover {
+      background: darken($primary-color, 10%);
+    }
+
+    &:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+  }
+
+  // 🔵 Sənəd siyahısı
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+
+    li {
+      background: $secondary-color;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: $border-radius;
+      transition: $transition;
+
+      &:hover {
+        background: lighten($secondary-color, 5%);
+      }
+
+      a {
+        text-decoration: none;
+        color: $text-color;
+        font-weight: 600;
+
+        &:hover {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}

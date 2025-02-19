@@ -206,6 +206,10 @@ export const getUser = async (req, res) => {
   }
 };
 
+
+
+
+
 export const uploadProfilePicture = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -229,6 +233,10 @@ export const uploadProfilePicture = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
+
+
+
+
 
 export const getUserProfile = async (req, res) => {
   try {

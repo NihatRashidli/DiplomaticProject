@@ -19,12 +19,6 @@ router.get("/", protect, async (req, res) => {
 // 🟢 POST /documents - Yeni sənəd əlavə et
 router.post("/", protect, upload.single("file"), async (req, res) => {
   try {
-
-    const imageUrl = req.file
-      ? `images/${req.file.filename}`.replace(/\\/g, "/")
-      : "images/default.png";
-
-      
     if (!req.file) {
       console.error("File upload failed, req.file is undefined!");
       return res.status(400).json({ message: "File is required" });
@@ -35,8 +29,8 @@ router.post("/", protect, upload.single("file"), async (req, res) => {
 
     const newDocument = new Document({
       name: req.file.originalname,
-      url: req.file.path, // 🟢 Faylın yolu (Məsələn: uploads/1711111111-document.pdf)
-      user: req.user._id, // 🟢 İstifadəçi ID-si
+      url: req.file.path,
+      user: req.user._id,
     });
 
     await newDocument.save();
@@ -47,7 +41,6 @@ router.post("/", protect, upload.single("file"), async (req, res) => {
   }
 });
 
-// 🟢 Serverdə yüklənmiş fayllara giriş imkanı ver
 router.use("/uploads", express.static("uploads"));
 
 export default router;

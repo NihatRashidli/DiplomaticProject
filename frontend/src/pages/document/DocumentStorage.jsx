@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import "./DocumentStorage.scss";
 import {
   fetchDocuments,
   uploadDocument,
@@ -35,10 +36,9 @@ const DocumentStorage = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="container">
+    <div className="container-document">
       <h2>Document Storage</h2>
 
-      {/* 🔵 Fayl seçimi */}
       <input type="file" onChange={(e) => setFile(e.target.files[0])} />
       <button onClick={handleUpload} disabled={!file}>
         Upload Document
