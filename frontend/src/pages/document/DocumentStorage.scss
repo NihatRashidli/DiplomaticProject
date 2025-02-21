@@ -1,3 +1,4 @@
+@use "sass:color";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap");
 
 $primary-color: #007bff;
@@ -22,7 +23,6 @@ $transition: 0.3s ease-in-out;
     margin-bottom: 15px;
   }
 
-  // 🔵 Fayl yükləmə hissəsi
   .file-upload {
     display: flex;
     flex-direction: column;
@@ -43,7 +43,7 @@ $transition: 0.3s ease-in-out;
       font-weight: 600;
 
       &:hover {
-        background: darken($primary-color, 10%);
+        background: color.adjust($primary-color, $lightness: -10%);
       }
     }
   }
@@ -59,7 +59,7 @@ $transition: 0.3s ease-in-out;
     transition: $transition;
 
     &:hover {
-      background: darken($primary-color, 10%);
+      background: color.adjust($primary-color, $lightness: -10%);
     }
 
     &:disabled {
@@ -68,7 +68,6 @@ $transition: 0.3s ease-in-out;
     }
   }
 
-  // 🔵 Sənəd siyahısı
   ul {
     list-style: none;
     padding: 0;
@@ -81,8 +80,12 @@ $transition: 0.3s ease-in-out;
       border-radius: $border-radius;
       transition: $transition;
 
+      .delete-document {
+        margin-left: 40px;
+      }
+
       &:hover {
-        background: lighten($secondary-color, 5%);
+        background: color.adjust($secondary-color, $lightness: 5%);
       }
 
       a {

@@ -2,10 +2,11 @@ import express from "express";
 import { protect } from "../middleware/auth/authMiddleware.js";
 import Document from "../models/documentModel.js";
 import upload from "../upload/upload.js";
+import fs from "fs";
+import path from "path";
 
 const router = express.Router();
 
-// 🟢 GET /documents - İstifadəçinin sənədlərini gətir
 router.get("/", protect, async (req, res) => {
   try {
     const documents = await Document.find({ user: req.user._id });
@@ -16,7 +17,6 @@ router.get("/", protect, async (req, res) => {
   }
 });
 
-// 🟢 POST /documents - Yeni sənəd əlavə et
 router.post("/", protect, upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
@@ -38,6 +38,31 @@ router.post("/", protect, upload.single("file"), async (req, res) => {
   } catch (error) {
     console.error("Error while saving document:", error);
     res.status(500).json({ message: "Failed to add document" });
+  }
+});
+
+// 🔹 Sənədi silmək üçün DELETE route əlavə edirik
+router.delete("/:id", protect, async (req, res) => {
+  try {
+    const document = await Document.findById(req.params.id);
+
+    if (!document) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    // Serverdə faylı silirik
+    const filePath = path.join(document.url);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    // MongoDB-dən sənədi silirik
+    await Document.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Document deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting document:", error);
+    res.status(500).json({ message: "Failed to delete document" });
   }
 });
 

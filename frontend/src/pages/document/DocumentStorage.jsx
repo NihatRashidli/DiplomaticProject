@@ -5,6 +5,7 @@ import "./DocumentStorage.scss";
 import {
   fetchDocuments,
   uploadDocument,
+  deleteDocument, // 🔹 Yeni əlavə etdik
 } from "../../redux/features/documentSlice";
 
 const DocumentStorage = () => {
@@ -25,10 +26,14 @@ const DocumentStorage = () => {
 
   const handleUpload = () => {
     if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
       dispatch(uploadDocument(file));
       setFile(null);
+    }
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this document?")) {
+      dispatch(deleteDocument(id));
     }
   };
 
@@ -44,7 +49,6 @@ const DocumentStorage = () => {
         Upload Document
       </button>
 
-      {/* 🔵 Sənəd siyahısı */}
       <ul>
         {documents.map((doc) => (
           <li key={doc._id}>
@@ -55,6 +59,7 @@ const DocumentStorage = () => {
             >
               {doc.name}
             </a>
+            <button className="delete-document" onClick={() => handleDelete(doc._id)}>Delete</button>
           </li>
         ))}
       </ul>

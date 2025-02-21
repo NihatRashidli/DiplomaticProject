@@ -29,6 +29,21 @@ export const uploadDocument = createAsyncThunk(
   }
 );
 
+// 🔴 Sənədi sil
+export const deleteDocument = createAsyncThunk(
+  "documents/delete",
+  async (documentId, { rejectWithValue }) => {
+    try {
+      await axios.delete(`http://localhost:5000/documents/${documentId}`, {
+        withCredentials: true, // Auth üçün
+      });
+      return documentId; // Silinən sənədin ID-sini qaytarırıq
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const documentSlice = createSlice({
   name: "documents",
   initialState: { documents: [], loading: false, error: null },
@@ -47,6 +62,15 @@ const documentSlice = createSlice({
       })
       .addCase(uploadDocument.fulfilled, (state, action) => {
         state.documents.push(action.payload);
+      })
+      // 🔴 DELETE sənəd funksiyası üçün reducer
+      .addCase(deleteDocument.fulfilled, (state, action) => {
+        state.documents = state.documents.filter(
+          (doc) => doc._id !== action.payload
+        );
+      })
+      .addCase(deleteDocument.rejected, (state, action) => {
+        state.error = action.payload;
       });
   },
 });
