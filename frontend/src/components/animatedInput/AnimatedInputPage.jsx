@@ -18,7 +18,7 @@ const AnimatedInputPage = () => {
       otherCosts: "",
       engineVolume: "",
       productionDate: "",
-      originCountry: "", // Default olaraq boş string
+      originCountry: "",
     },
     validationSchema: TaxCalculateSchema,
     onSubmit: async (values) => {

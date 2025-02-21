@@ -67,22 +67,13 @@ const Navbar = () => {
               <Link to="/">Home</Link>
             </li>
             <li className="navlist-item">
-              <Link to="/category">Category</Link>
-            </li>
-            <li className="navlist-item">
-              <Link to="/men">Men</Link>
-            </li>
-            <li className="navlist-item">
-              <Link to="/women">Women</Link>
-            </li>
-            <li className="navlist-item">
-              <Link to="/latest">Latest</Link>
-            </li>
-            <li className="navlist-item">
-              <Link to="/admin">Admin</Link>
+              <Link to="/tax">Tax Calculate</Link>
             </li>
             <li className="navlist-item">
               <Link to="/documentstorage">Document Storage</Link>
+            </li>
+            <li className="navlist-item">
+              <Link to="/admin">Admin</Link>
             </li>
           </ul>
           <div className="wrapper">

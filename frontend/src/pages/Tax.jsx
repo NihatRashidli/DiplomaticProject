@@ -1,7 +1,7 @@
 import React from 'react'
 import AnimatedInputPage from '../components/animatedInput/AnimatedInputPage'
 
-const Category = () => {
+const Tax = () => {
   return (
     <div>
       <AnimatedInputPage />
@@ -9,4 +9,4 @@ const Category = () => {
   )
 }
 
-export default Category
+export default Tax

@@ -1,5 +1,6 @@
 import React from "react";
 import "./Hero.scss";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -16,7 +17,9 @@ const Hero = () => {
                   Extract, cross-reference and verify data with the Intelligent
                   Automation Platform in Excel
                 </p>
-                <button className="btn btn-primary">Tax Calculate</button>
+                <Link to="/tax">
+                  <button className="btn btn-primary tax">Tax Calculate</button>
+                </Link>
               </div>
             </div>
 

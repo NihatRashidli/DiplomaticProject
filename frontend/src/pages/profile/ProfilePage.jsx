@@ -125,7 +125,7 @@ const ProfilePage = () => {
       </div>
 
       <div className="document-history">
-        <h2>Dokument Keçmişi</h2>
+        <h2>Dokumentasiya Keçmişi</h2>
         {documents.length > 0 ? (
           <ul>
             {documents.map((doc) => (
