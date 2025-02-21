@@ -8,6 +8,7 @@ import {
   verifyEmail,
   getUser,
   uploadProfilePicture,
+  updateUserRole,
 } from "../controllers/userController.js";
 import upload from "../upload/upload.js";
 import { protect } from "../middleware/auth/authMiddleware.js";
@@ -38,5 +39,6 @@ userRouter.get("/", protect, async (req, res) => {
     res.status(500).json({ message: "Failed to fetch documents" });
   }
 });
+userRouter.post("/update-role", updateUserRole);
 
 export default userRouter;

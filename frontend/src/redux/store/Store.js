@@ -5,50 +5,38 @@ import productSlice from "../features/ProductSlice";
 import basketSlice from "../features/BasketSlice";
 import wishlistSlice from "../features/WishlistSlice";
 import userSlice from "../features/userSlice";
-import documentSlice from "../features/documentSlice"; // DocumentSlice əlavə edildi
+import documentSlice from "../features/documentSlice";
+import adminSlice from "../features/adminSlice";
 
-const persistProductConfig = {
-  key: "product",
+const persistConfig = {
+  key: "root",
   storage,
+  whitelist: ["user", "basket", "wishlist", "documents", "admin"],
 };
 
-const persistBasketConfig = {
-  key: "basket",
-  storage,
-};
-
-const persistWishlistConfig = {
-  key: "wishlist",
-  storage,
-};
-
-const persistUserConfig = {
-  key: "user",
-  storage,
-};
-
-const persistDocumentConfig = {
-  key: "documents",
-  storage,
-};
-
+const persistedUserReducer = persistReducer(
+  { key: "user", storage },
+  userSlice
+);
 const persistedProductReducer = persistReducer(
-  persistProductConfig,
+  { key: "product", storage },
   productSlice
 );
-
+const persistedBasketReducer = persistReducer(
+  { key: "basket", storage },
+  basketSlice
+);
 const persistedWishlistReducer = persistReducer(
-  persistWishlistConfig,
+  { key: "wishlist", storage },
   wishlistSlice
 );
-
-const persistedBasketReducer = persistReducer(persistBasketConfig, basketSlice);
-
-const persistedUserReducer = persistReducer(persistUserConfig, userSlice);
-
 const persistedDocumentReducer = persistReducer(
-  persistDocumentConfig,
+  { key: "documents", storage },
   documentSlice
+);
+const persistedAdminReducer = persistReducer(
+  { key: "admin", storage },
+  adminSlice
 );
 
 export const store = configureStore({
@@ -58,6 +46,7 @@ export const store = configureStore({
     wishlist: persistedWishlistReducer,
     user: persistedUserReducer,
     documents: persistedDocumentReducer,
+    admin: persistedAdminReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

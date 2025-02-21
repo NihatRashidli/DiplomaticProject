@@ -28,7 +28,7 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: error.details[0].message });
     }
 
-    const existUser = await user.findOne({ email });
+    const existUser = await User.findOne({ email });
 
     if (existUser) {
       return res.status(400).json({ message: "User already exists" });
@@ -36,18 +36,23 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new user({
+    // ✅ **İlk user admin olsun**
+    const userCount = await User.countDocuments();
+    const role = userCount === 0 ? "admin" : "user"; // İlk user admin olacaq
+
+    const newUser = new User({
       image: imageUrl,
       name,
       surname,
       email,
       password: hashedPassword,
+      role, // Admin və ya user
     });
 
     await newUser.save();
 
     // ✅ Email təsdiqləmə üçün token yaradılır
-    const jwtToken = generateToken(newUser._id, res); // Tokeni cookie-də yox, URL üçün qaytarırıq
+    const jwtToken = generateToken(newUser._id, res);
 
     // ✅ Email təsdiqləmə linki
     const confirmLink = `${process.env.CLIENT_LINK}/verify?token=${jwtToken}`;
@@ -206,10 +211,6 @@ export const getUser = async (req, res) => {
   }
 };
 
-
-
-
-
 export const uploadProfilePicture = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -234,10 +235,6 @@ export const uploadProfilePicture = async (req, res) => {
   }
 };
 
-
-
-
-
 export const getUserProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
@@ -256,5 +253,25 @@ export const getUserProfile = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const updateUserRole = async (req, res) => {
+  try {
+    const { email, role } = req.body;
+
+    const updatedUser = await User.findOneAndUpdate(
+      { email },
+      { role },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.status(200).json({ message: "Role updated successfully", updatedUser });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
   }
 };

@@ -12,6 +12,7 @@ const Navbar = () => {
   const baseUrl = "http://localhost:5000/auth";
 
   const { user } = useSelector((state) => state.user);
+  const isAdmin = user?.role === "admin";
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -72,9 +73,7 @@ const Navbar = () => {
             <li className="navlist-item">
               <Link to="/documentstorage">Document Storage</Link>
             </li>
-            <li className="navlist-item">
-              <Link to="/admin">Admin</Link>
-            </li>
+            {isAdmin && <Link to="/admin">Admin Panel</Link>}
           </ul>
           <div className="wrapper">
             <Link to="/profile">

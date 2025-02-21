@@ -20,11 +20,20 @@ export const userSlice = createSlice({
     updateProfilePicture: (state, action) => {
       if (state.user) {
         state.user.profilePicture = action.payload;
+        localStorage.setItem("user", JSON.stringify(state.user));
       }
+    },
+    setUsers: (state, action) => {
+      state.users = action.payload;
+    },
+    logout: (state) => {
+      state.user = null;
+      localStorage.removeItem("user");
     },
   },
 });
 
-export const { setUser, updateProfilePicture } = userSlice.actions;
+export const { setUser, updateProfilePicture, setUsers, logout } =
+  userSlice.actions;
 
 export default userSlice.reducer;

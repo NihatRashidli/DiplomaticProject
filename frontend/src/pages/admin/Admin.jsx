@@ -1,172 +1,119 @@
-import React, { useState } from "react";
-import "./Admin.scss";
-import Table from "react-bootstrap/Table";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import "./Admin.scss";
 import {
-  addProduct,
-  deleteProduct,
-  searchProduct,
-  sortProductHigest,
-  sortProductLowest,
-} from "../../redux/features/ProductSlice";
-import { productSchema } from "../../schema/ProductCreateSchema";
+  deleteUser,
+  fetchUsers,
+  updateUser,
+} from "../../redux/features/adminSlice";
 
 const Admin = () => {
-  const { products } = useSelector((state) => state.products);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { users, loading, error } = useSelector((state) => state.admin);
+  const { user } = useSelector((state) => state.user);
 
-  const [open, setOpen] = useState(false);
+  const [editData, setEditData] = useState(null); // Redaktə üçün seçilmiş istifadəçi
 
-  const {
-    values,
-    handleChange,
-    handleSubmit,
-    setFieldValue,
-    errors,
-    resetForm,
-  } = useFormik({
-    initialValues: {
-      image: null,
-      title: "",
-      category: "",
-      price: "",
-    },
-    onSubmit: (values) => {
-      const formData = new FormData();
+  useEffect(() => {
+    if (!user || user.role !== "admin") {
+      navigate("/");
+    } else {
+      dispatch(fetchUsers());
+    }
+  }, [user, navigate, dispatch]);
 
-      formData.append("image", values.image);
-      formData.append("title", values.title);
-      formData.append("category", values.category);
-      formData.append("price", values.price);
-      
-      dispatch(addProduct(formData));
-      resetForm();
-      setOpen(false);
-    },
-    validationSchema: productSchema,
-  });
+  const handleEdit = (user) => {
+    setEditData(user); // Redaktə olunacaq istifadəçini seç
+  };
+
+  const handleSave = () => {
+    if (editData) {
+      dispatch(updateUser({ userId: editData._id, updatedData: editData }));
+      setEditData(null); // Formu bağla
+    }
+  };
+
+  const handleDelete = (userId) => {
+    if (window.confirm("Bu istifadəçini silmək istədiyinizə əminsiniz?")) {
+      dispatch(deleteUser(userId));
+    }
+  };
 
   return (
-    <div className="container">
-      {open && (
-        <form
-          encType="multipart/form-data"
-          action=""
-          className="form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleSubmit();
-          }}
-        >
-          <h3>Create Product</h3>
-          <div className="form-group">
-            <label htmlFor="image">Image</label>
-            <div className="text-danger">{errors.image}</div>
-            <input
-              type="file"
-              id="image"
-              className="form-control"
-              onChange={(e) => setFieldValue("image", e.currentTarget.files[0])}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="title">Title</label>
-            <div className="text-danger">{errors.title}</div>
-            <input
-              type="text"
-              id="title"
-              className="form-control"
-              onChange={handleChange}
-              value={values.title}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="category">Category</label>
-            <div className="text-danger">{errors.category}</div>
-            <input
-              type="text"
-              id="category"
-              className="form-control"
-              onChange={handleChange}
-              value={values.category}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="price">Price</label>
-            <div className="text-danger">{errors.price}</div>
-            <input
-              type="text"
-              id="price"
-              className="form-control"
-              onChange={handleChange}
-              value={values.price}
-            />
-          </div>
+    <div className="admin-container">
+      <h2>Admin Panel</h2>
 
-          <button className="btn btn-primary">Add</button>
-        </form>
-      )}
-      <h2 className="text-center my-3">Admin Panel</h2>
-      <div className=" mb-2 d-flex justify-content-between">
-        <button className="btn btn-success" onClick={() => setOpen(!open)}>
-          Create
-        </button>
-        <input
-          type="text"
-          onChange={(e) => dispatch(searchProduct(e.target.value))}
-        />
-        <div className="d-flex gap-2">
-          <button
-            className="btn btn-primary"
-            onClick={() => dispatch(sortProductLowest())}
-          >
-            Low
-          </button>
-          <button
-            className="btn btn-primary"
-            onClick={() => dispatch(sortProductHigest())}
-          >
-            High
-          </button>
-        </div>
-      </div>
-      <Table striped bordered hover>
+      {loading && <p>Yüklənir...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+
+      <table className="admin-table">
         <thead>
           <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Category</th>
-            <th>Price</th>
-            <th>Setting</th>
+            <th>Ad</th>
+            <th>Email</th>
+            <th>Rolu</th>
+            <th>Əməliyyat</th>
           </tr>
         </thead>
         <tbody>
-          {products &&
-            products.map((item) => (
-              <tr key={item._id}>
-                <td>
-                  <img
-                    style={{ width: "100px", height: "100px" }}
-                    src={`http://localhost:5000/${item.image}`}
-                    alt=""
-                  />
-                </td>
-                <td>{item.title}</td>
-                <td>{item.category}</td>
-                <td>{item.price}</td>
-                <td>
+          {users.map((u) => (
+            <tr key={u._id}>
+              <td>{u.name}</td>
+              <td>{u.email}</td>
+              <td>{u.role}</td>
+              <td>
+                <button className="edit-btn" onClick={() => handleEdit(u)}>
+                  Edit
+                </button>
+                {u.role !== "admin" && (
                   <button
-                    className="btn btn-danger"
-                    onClick={() => dispatch(deleteProduct(item._id))}
+                    className="delete-btn"
+                    onClick={() => handleDelete(u._id)}
                   >
-                    Delete
+                    Sil
                   </button>
-                </td>
-              </tr>
-            ))}
+                )}
+              </td>
+            </tr>
+          ))}
         </tbody>
-      </Table>
+      </table>
+
+      {editData && (
+        <div className="edit-form">
+          <h3>Edit User</h3>
+          <label>Ad:</label>
+          <input
+            type="text"
+            value={editData.name}
+            onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+          />
+          <label>Email:</label>
+          <input
+            type="email"
+            value={editData.email}
+            onChange={(e) =>
+              setEditData({ ...editData, email: e.target.value })
+            }
+          />
+          <label>Rolu:</label>
+          <select
+            value={editData.role}
+            onChange={(e) => setEditData({ ...editData, role: e.target.value })}
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button className="save-btn" onClick={handleSave}>
+            Yadda saxla
+          </button>
+          <button className="cancel-btn" onClick={() => setEditData(null)}>
+            Ləğv et
+          </button>
+        </div>
+      )}
     </div>
   );
 };
