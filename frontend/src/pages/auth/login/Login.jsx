@@ -5,6 +5,7 @@ import { loginschema } from "../../../schema/LoginSchema";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { setUser } from "../../../redux/features/userSlice";
+import './Login.scss';
 
 const Login = () => {
   const baseUrl = "http://localhost:5000/auth";
@@ -18,7 +19,7 @@ const Login = () => {
       });
 
       if (res.status === 200) {
-        dispatch(setUser(res.data.user)); // Ensure user data is set correctly
+        dispatch(setUser(res.data.user));
         alert("Login successful");
         navigate("/");
       } else {
@@ -44,7 +45,7 @@ const Login = () => {
   });
 
   return (
-    <div className="container">
+    <div className="container-login">
       <form
         encType="multipart/form-data"
         action=""

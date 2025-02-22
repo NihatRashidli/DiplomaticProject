@@ -6,13 +6,14 @@
   background: linear-gradient(to bottom, #eef2f3, #ffffff);
 }
 
+/* ✅ First olan div */
 .video-container-first {
   display: flex;
   align-items: center;
   gap: 2rem;
   margin-bottom: 50px;
   background: #ffffff;
-  padding: 0 0 0 2rem;
+  padding: 2rem;
   border-radius: 15px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -21,32 +22,27 @@
     transform: translateY(-5px);
     box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
   }
+}
 
-  &:nth-child(odd) {
-    flex-direction: row-reverse;
+/* ✅ Second olan div */
+.video-container-second {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 50px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
   }
 }
-.video-container-second {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin-bottom: 50px;
-    background: #ffffff;
-    padding: 0 2rem 0 0;
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
-    }
-  
-    &:nth-child(odd) {
-      flex-direction: row-reverse;
-    }
-  }
 
+/* Video və yazılar */
 .video {
   width: 60%;
   border-radius: 15px;
@@ -102,9 +98,17 @@
   }
 }
 
-/* Responsivlik üçün */
+/* 🔹 **1024px və aşağısında first və second üçün fərqli qaydalar tətbiq olunur!** */
 @media (max-width: 1024px) {
-  .video-container {
+  /* ✅ First div */
+  .video-container-first {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  /* ✅ Second div */
+  .video-container-second {
     flex-direction: column;
     text-align: center;
     padding: 1.5rem;
@@ -116,5 +120,52 @@
 
   .text-content {
     width: 100%;
+    text-align: center;
+  }
+}
+
+/* 🔹 **768px və aşağısında first və second üçün fərqli qaydalar!** */
+@media (max-width: 768px) {
+  .video-section {
+    padding: 2rem 1rem;
+  }
+
+  /* ✅ First div */
+  .video-container-first {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  /* ✅ Second div */
+  .video-container-second {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+
+  .video {
+    width: 100%;
+  }
+
+  .text-content {
+    width: 100%;
+    text-align: center;
+
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    blockquote {
+      font-size: 0.9rem;
+    }
   }
 }

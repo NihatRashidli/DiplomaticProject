@@ -1,15 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// 🔵 Sənədləri gətir
 export const fetchDocuments = createAsyncThunk("documents/fetch", async () => {
   const response = await axios.get("http://localhost:5000/documents", {
-    withCredentials: true, // Cookie ilə auth
+    withCredentials: true,
   });
   return response.data;
 });
 
-// 🔵 Yeni sənəd əlavə et
 export const uploadDocument = createAsyncThunk(
   "documents/upload",
   async (file) => {
@@ -29,15 +27,14 @@ export const uploadDocument = createAsyncThunk(
   }
 );
 
-// 🔴 Sənədi sil
 export const deleteDocument = createAsyncThunk(
   "documents/delete",
   async (documentId, { rejectWithValue }) => {
     try {
       await axios.delete(`http://localhost:5000/documents/${documentId}`, {
-        withCredentials: true, // Auth üçün
+        withCredentials: true,
       });
-      return documentId; // Silinən sənədin ID-sini qaytarırıq
+      return documentId;
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
@@ -63,7 +60,6 @@ const documentSlice = createSlice({
       .addCase(uploadDocument.fulfilled, (state, action) => {
         state.documents.push(action.payload);
       })
-      // 🔴 DELETE sənəd funksiyası üçün reducer
       .addCase(deleteDocument.fulfilled, (state, action) => {
         state.documents = state.documents.filter(
           (doc) => doc._id !== action.payload

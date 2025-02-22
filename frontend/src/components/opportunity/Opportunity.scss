@@ -92,45 +92,71 @@
         transform: rotateY(360deg);
       }
     }
+  }
 
-    @keyframes rotate360 {
-      from {
-        transform: rotateY(0deg);
-      }
-      to {
-        transform: rotateY(360deg);
-      }
+  @keyframes rotate360 {
+    from {
+      transform: rotateY(0deg);
     }
-
-    .auto-rotate img {
-      animation: rotate360 4s linear infinite;
+    to {
+      transform: rotateY(360deg);
     }
+  }
 
-    @media (max-width: 768px) {
-      .opportunity-image {
-        width: 100%;
-
-        img {
-          border-radius: 10px;
-        }
-      }
-    }
+  .auto-rotate img {
+    animation: rotate360 4s linear infinite;
   }
 }
 
+// 🔹 **1024px və aşağıda sütun şəklində düzüləcək**
+@media (max-width: 1024px) {
+  .opportunity-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .challenges {
+    width: 100%;
+    align-items: center;
+
+    .challenge-card {
+      width: 80%;
+      padding: 30px;
+    }
+  }
+
+  .opportunity-image {
+    width: 450px;
+  }
+}
+
+// 🔹 **768px və aşağıda tam mərkəzləşəcək**
 @media (max-width: 768px) {
   .opportunity-content {
     flex-direction: column;
     align-items: center;
     gap: 20px;
+  }
 
-    .challenges {
-      width: 100%;
-      align-items: center;
-    }
+  .challenges {
+    width: 100%;
+    align-items: center;
 
-    .opportunity-image {
-      width: 300px;
+    .challenge-card {
+      width: 90%;
+      padding: 25px;
+      flex-direction: column;
+      text-align: center;
+
+      .challenge-icon {
+        margin-bottom: 10px;
+        margin-right: 0;
+      }
     }
+  }
+
+  .opportunity-image {
+    width: 300px;
   }
 }

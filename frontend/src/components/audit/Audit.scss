@@ -10,14 +10,17 @@
 
     .stat {
       text-align: center;
+
       h2 {
         font-size: 7.5rem;
         font-weight: bold;
         margin: 0;
+
         span {
           color: #00bcd4;
         }
       }
+
       p {
         font-size: 1rem;
         color: #333;
@@ -64,7 +67,8 @@
           background-color: #00bcd4;
           border-radius: 5px;
           margin-bottom: 10px;
-          i{
+
+          i {
             font-size: 2.5rem;
             color: #fff;
           }
@@ -80,6 +84,22 @@
   }
 }
 
+// 🔹 **1024px və aşağıda statistikalar alt-alta düzüləcək**
+@media (max-width: 1024px) {
+  .audit-stats {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .audit-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+}
+
+// 🔹 **768px və aşağıda hər şey tam sütun olacaq**
 @media (max-width: 768px) {
   .audit-stats {
     flex-direction: column;
@@ -87,8 +107,17 @@
     gap: 20px;
   }
 
+  .audit-stats .stat h2 {
+    font-size: 5rem; // Kiçik ekran üçün font ölçüsünü azaltdım.
+  }
+
   .audit-cards {
+    display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .audit-card {
+    width: 90%;
   }
 }

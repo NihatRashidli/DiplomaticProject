@@ -2,6 +2,7 @@ import React from "react";
 import { useFormik } from "formik";
 import { forgotschema } from "../../../schema/ForgotSchema";
 import axios from "axios";
+import "./ForgotPassword.scss";
 
 const ForgotPassword = () => {
   const baseUrl = `http://localhost:5000/auth`;
@@ -34,7 +35,7 @@ const ForgotPassword = () => {
   });
 
   return (
-    <div className="container">
+    <div className="container-forgot">
       <form
         action=""
         className="form"

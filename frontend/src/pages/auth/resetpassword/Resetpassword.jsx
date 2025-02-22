@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { resetschema } from "../../../schema/ResetSchema";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./Resetpassword.scss";
 
 const Resetpassword = () => {
   const baseUrl = `http://localhost:5000/auth`;
@@ -53,7 +54,7 @@ const Resetpassword = () => {
   });
 
   return (
-    <div className="container">
+    <div className="container-resetpassword">
       <form
         className="form"
         onSubmit={(e) => {
