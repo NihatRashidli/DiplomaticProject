@@ -15,14 +15,12 @@ const ProfilePage = () => {
   const [profilePicture, setProfilePicture] = useState(null);
   const [documents, setDocuments] = useState([]);
 
-  // 📌 İstifadəçi yoxdursa login-ə yönləndir
   useEffect(() => {
     if (!user) {
       navigate("/login");
     }
   }, [user, navigate]);
 
-  // 📌 Document-ləri çəkmək üçün API çağırışı
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
@@ -38,7 +36,6 @@ const ProfilePage = () => {
     fetchDocuments();
   }, []);
 
-  // 📌 Logout funksiyası
   const handleLogout = async () => {
     try {
       await axios.post(
@@ -53,7 +50,6 @@ const ProfilePage = () => {
     }
   };
 
-  // 📌 Tarixi formatlama funksiyası
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return new Date(dateString).toLocaleDateString("az-AZ", options);
@@ -78,9 +74,7 @@ const ProfilePage = () => {
       if (res.status === 200) {
         alert("Profil şəkli yeniləndi!");
         dispatch(setUser({ ...user, profilePicture: res.data.user.image }));
-
-        // Şəkil uğurla yükləndikdən sonra səhifəni yeniləyirik
-        window.location.reload(); // Bu, səhifəni yeniləyəcək
+        window.location.reload();
       }
     } catch (error) {
       alert("Profil şəkli yenilənmədi.");
@@ -118,7 +112,7 @@ const ProfilePage = () => {
                 id="profilePicture"
                 onChange={(e) => setProfilePicture(e.target.files[0])}
               />
-              <button onClick={handleProfilePictureUpload}>Yüklə</button>
+              <button className="upload-btn" onClick={handleProfilePictureUpload}>Yüklə</button>
             </div>
           </>
         ) : (

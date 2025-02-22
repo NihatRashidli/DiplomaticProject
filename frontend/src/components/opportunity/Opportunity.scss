@@ -36,6 +36,8 @@
       display: flex;
       flex-direction: column;
       gap: 20px;
+      width: 500px;
+      align-items: center;
 
       .challenge-card {
         display: flex;
@@ -44,7 +46,8 @@
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         padding: 40px 100px 40px 40px;
-        width: 500px;
+        flex-basis: 100%; /* Bu, kartın böyüklüyünü tənzimləyir */
+        max-width: 500px; /* Kartların maksimal eni */
         text-align: left;
         transition: transform 0.3s ease;
 
@@ -78,7 +81,7 @@
       height: auto;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       position: relative;
 
       img {
@@ -108,7 +111,6 @@
   }
 }
 
-// 🔹 **1024px və aşağıda sütun şəklində düzüləcək**
 @media (max-width: 1024px) {
   .opportunity-content {
     flex-direction: column;
@@ -122,16 +124,17 @@
 
     .challenge-card {
       width: 80%;
+      max-width: 450px;
       padding: 30px;
     }
   }
 
   .opportunity-image {
-    width: 450px;
+    width: 100%;
+    max-width: 450px;
   }
 }
 
-// 🔹 **768px və aşağıda tam mərkəzləşəcək**
 @media (max-width: 768px) {
   .opportunity-content {
     flex-direction: column;
@@ -145,6 +148,7 @@
 
     .challenge-card {
       width: 90%;
+      max-width: 350px;
       padding: 25px;
       flex-direction: column;
       text-align: center;
@@ -157,6 +161,7 @@
   }
 
   .opportunity-image {
-    width: 300px;
+    width: 80%;
+    max-width: 300px;
   }
 }

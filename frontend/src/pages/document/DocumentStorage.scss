@@ -100,3 +100,57 @@ $transition: 0.3s ease-in-out;
     }
   }
 }
+
+// Responsive: 1024px
+@media (max-width: 1024px) {
+  .container-document {
+    padding: 15px;
+    max-width: 80%;
+    margin: 30px auto;
+  }
+
+  .file-upload {
+    label {
+      font-size: 0.9rem;
+      padding: 8px 12px;
+    }
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  ul li {
+    padding: 10px;
+  }
+}
+
+// Responsive: 768px
+@media (max-width: 768px) {
+  .container-document {
+    padding: 10px;
+    max-width: 90%;
+    margin: 20px auto;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .file-upload {
+    label {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+    }
+  }
+
+  button {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
+
+  ul li {
+    padding: 8px;
+  }
+}

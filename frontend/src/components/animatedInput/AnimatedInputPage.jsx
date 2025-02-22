@@ -83,7 +83,7 @@ const AnimatedInputPage = () => {
         <input
           type="number"
           name="invoiceValue"
-          placeholder="İnvoys Dəyəri (USD)"
+          placeholder="İnvoys Dəyəri (AZN)"
           value={formik.values.invoiceValue}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -97,7 +97,7 @@ const AnimatedInputPage = () => {
         <input
           type="number"
           name="transportCost"
-          placeholder="Nəqliyyat Xərci (USD)"
+          placeholder="Nəqliyyat Xərci (AZN)"
           value={formik.values.transportCost}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -111,7 +111,7 @@ const AnimatedInputPage = () => {
         <input
           type="number"
           name="otherCosts"
-          placeholder="Digər Xərclər (USD)"
+          placeholder="Digər Xərclər (AZN)"
           value={formik.values.otherCosts}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

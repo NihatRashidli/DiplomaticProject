@@ -23,6 +23,8 @@
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;  // Bu əlavə inputların genişliyini düzgün hesablayacaq
     }
 
     input[type="radio"] {
@@ -60,6 +62,7 @@
       border-radius: 4px;
       cursor: pointer;
       transition: background 0.3s;
+      width: 100%; // Bu da düyməni ekranın genişliyinə uyğunlaşdıracaq
       &:hover {
         background-color: #0056b3;
       }
@@ -87,4 +90,55 @@
 .yup-tax {
   color: red;
   margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .animated-input-page {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .input-section,
+  .result-section {
+    width: 80%;
+    margin-bottom: 20px;
+  }
+
+  .input-section {
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .animated-input-page {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .input-section,
+  .result-section {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .input-section {
+    align-items: center;
+  }
+
+  select,
+  input {
+    padding: 8px;
+    font-size: 14px;
+    width: 100%;
+  }
+
+  button {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  h3 {
+    font-size: 16px;
+  }
 }
