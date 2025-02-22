@@ -51,10 +51,14 @@ const adminSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(updateUser.fulfilled, (state, action) => {
-        state.users = state.users.map((user) =>
-          user._id === action.payload._id ? action.payload : user
+        const updatedUserIndex = state.users.findIndex(
+          (user) => user._id === action.payload._id
         );
+        if (updatedUserIndex !== -1) {
+          state.users[updatedUserIndex] = action.payload;
+        }
       })
+
       .addCase(deleteUser.fulfilled, (state, action) => {
         state.users = state.users.filter((user) => user._id !== action.payload);
       });

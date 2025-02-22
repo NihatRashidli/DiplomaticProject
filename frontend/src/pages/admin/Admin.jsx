@@ -7,37 +7,48 @@ import {
   fetchUsers,
   updateUser,
 } from "../../redux/features/adminSlice";
+import { fetchDocuments } from "../../redux/features/documentSlice";
 
 const Admin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { users, loading, error } = useSelector((state) => state.admin);
+  const { documents } = useSelector((state) => state.documents);
   const { user } = useSelector((state) => state.user);
 
-  const [editData, setEditData] = useState(null); // Redaktə üçün seçilmiş istifadəçi
+  const [editData, setEditData] = useState(null);
 
   useEffect(() => {
     if (!user || user.role !== "admin") {
       navigate("/");
     } else {
       dispatch(fetchUsers());
+      dispatch(fetchDocuments());
     }
   }, [user, navigate, dispatch]);
 
   const handleEdit = (user) => {
-    setEditData(user); // Redaktə olunacaq istifadəçini seç
+    setEditData(user);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (editData) {
-      dispatch(updateUser({ userId: editData._id, updatedData: editData }));
-      setEditData(null); // Formu bağla
+      try {
+        await dispatch(
+          updateUser({ userId: editData._id, updatedData: editData })
+        ).unwrap();
+        dispatch(fetchUsers());
+        setEditData(null);
+      } catch (error) {
+        console.error("İstifadəçi yenilənmədi:", error);
+      }
     }
   };
 
-  const handleDelete = (userId) => {
+  const handleDelete = async (userId) => {
     if (window.confirm("Bu istifadəçini silmək istədiyinizə əminsiniz?")) {
-      dispatch(deleteUser(userId));
+      await dispatch(deleteUser(userId));
+      dispatch(fetchUsers());
     }
   };
 
@@ -114,6 +125,26 @@ const Admin = () => {
           </button>
         </div>
       )}
+
+      <h3>İstifadəçilərin Yüklədiyi Sənədlər</h3>
+      <table className="admin-table">
+        <thead>
+          <tr>
+            <th>İstifadəçi</th>
+            <th>Sənəd Adı</th>
+          </tr>
+        </thead>
+        <tbody>
+          {documents.map((doc) => (
+            <tr key={doc._id}>
+              <td>
+                {users.find((u) => u._id === doc.user)?.name || "Bilinməyən"}
+              </td>
+              <td>{doc.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

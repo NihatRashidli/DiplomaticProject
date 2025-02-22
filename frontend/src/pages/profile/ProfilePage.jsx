@@ -59,7 +59,6 @@ const ProfilePage = () => {
     return new Date(dateString).toLocaleDateString("az-AZ", options);
   };
 
-  // 📌 Profil şəklini yükləmək üçün funksiya
   const handleProfilePictureUpload = async () => {
     if (!profilePicture) {
       alert("Profil şəkli seçin.");
@@ -79,6 +78,9 @@ const ProfilePage = () => {
       if (res.status === 200) {
         alert("Profil şəkli yeniləndi!");
         dispatch(setUser({ ...user, profilePicture: res.data.user.image }));
+
+        // Şəkil uğurla yükləndikdən sonra səhifəni yeniləyirik
+        window.location.reload(); // Bu, səhifəni yeniləyəcək
       }
     } catch (error) {
       alert("Profil şəkli yenilənmədi.");
