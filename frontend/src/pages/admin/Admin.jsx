@@ -7,7 +7,7 @@ import {
   fetchUsers,
   updateUser,
 } from "../../redux/features/adminSlice";
-import { fetchDocuments } from "../../redux/features/documentSlice";
+import { fetchDocumentsAdmin } from "../../redux/features/documentSlice";
 
 const Admin = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const Admin = () => {
       navigate("/");
     } else {
       dispatch(fetchUsers());
-      dispatch(fetchDocuments());
+      dispatch(fetchDocumentsAdmin());
     }
   }, [user, navigate, dispatch]);
 

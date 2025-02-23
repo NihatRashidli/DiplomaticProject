@@ -22,7 +22,6 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-// 🔹 İstifadəçi silmək (Admin)
 export const deleteUser = createAsyncThunk(
   "admin/deleteUser",
   async (userId) => {

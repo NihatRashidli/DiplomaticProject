@@ -8,6 +8,16 @@ export const fetchDocuments = createAsyncThunk("documents/fetch", async () => {
   return response.data;
 });
 
+export const fetchDocumentsAdmin = createAsyncThunk(
+  "documents/fetchAdmin",
+  async () => {
+    const response = await axios.get("http://localhost:5000/documents/admin", {
+      withCredentials: true,
+    });
+    return response.data;
+  }
+);
+
 export const uploadDocument = createAsyncThunk(
   "documents/upload",
   async (file) => {
@@ -50,6 +60,10 @@ const documentSlice = createSlice({
         state.loading = true;
       })
       .addCase(fetchDocuments.fulfilled, (state, action) => {
+        state.loading = false;
+        state.documents = action.payload;
+      })
+      .addCase(fetchDocumentsAdmin.fulfilled, (state, action) => {
         state.loading = false;
         state.documents = action.payload;
       })

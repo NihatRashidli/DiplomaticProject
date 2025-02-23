@@ -153,7 +153,7 @@ const AnimatedInputPage = () => {
               type="radio"
               name="originCountry"
               value="Digər Ölkələr"
-              checked={formik.values.originCountry === "other"}
+              checked={formik.values.originCountry === "Digər Ölkələr"}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />{" "}
@@ -164,13 +164,14 @@ const AnimatedInputPage = () => {
               type="radio"
               name="originCountry"
               value="Vergidən Azad"
-              checked={formik.values.originCountry === "trade"}
+              checked={formik.values.originCountry === "Vergidən Azad"}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />{" "}
             Azad ticarət sazişi bağlanan istehsal olunub ordan gətirilir
           </label>
         </div>
+
         {formik.touched.originCountry && formik.errors.originCountry ? (
           <div className="yup-tax">{formik.errors.originCountry}</div>
         ) : null}

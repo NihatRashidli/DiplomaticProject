@@ -4,8 +4,11 @@ import Document from "../models/documentModel.js";
 import upload from "../upload/upload.js";
 import fs from "fs";
 import path from "path";
+import { getDocuments } from "../controllers/documentController.js";
 
 const router = express.Router();
+
+router.get("/admin", protect, getDocuments);
 
 router.get("/", protect, async (req, res) => {
   try {
@@ -41,7 +44,6 @@ router.post("/", protect, upload.single("file"), async (req, res) => {
   }
 });
 
-// 🔹 Sənədi silmək üçün DELETE route əlavə edirik
 router.delete("/:id", protect, async (req, res) => {
   try {
     const document = await Document.findById(req.params.id);
@@ -50,13 +52,11 @@ router.delete("/:id", protect, async (req, res) => {
       return res.status(404).json({ message: "Document not found" });
     }
 
-    // Serverdə faylı silirik
     const filePath = path.join(document.url);
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
 
-    // MongoDB-dən sənədi silirik
     await Document.findByIdAndDelete(req.params.id);
 
     res.json({ message: "Document deleted successfully" });

@@ -28,72 +28,74 @@
 
   .opportunity-content {
     display: flex;
-    justify-content: center;
+    justify-content: space-between; /* Sabit aralıq əlavə edirik */
+    flex-wrap: wrap; /* Flexbox-u bükürük */
+    gap: 30px; /* Kartlar arasında boşluq */
+    align-items: flex-start;
+    justify-content: center; /* Kartları ortalayırıq */
+  }
+
+  .challenges {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%; /* Çox kiçik ekranlarda 100% genişlik */
     align-items: center;
-    gap: 250px;
 
-    .challenges {
+    .challenge-card {
       display: flex;
-      flex-direction: column;
-      gap: 20px;
-      width: 500px;
       align-items: center;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px 40px;
+      flex-basis: 100%;
+      max-width: 350px; /* Kartların maksimal eni */
+      text-align: left;
+      transition: transform 0.3s ease;
 
-      .challenge-card {
-        display: flex;
-        align-items: center;
-        background: #fff;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 40px 100px 40px 40px;
-        flex-basis: 100%; /* Bu, kartın böyüklüyünü tənzimləyir */
-        max-width: 500px; /* Kartların maksimal eni */
-        text-align: left;
-        transition: transform 0.3s ease;
+      &:hover {
+        transform: translateY(-5px);
+      }
 
-        &:hover {
-          transform: translateY(-5px);
+      .challenge-icon {
+        font-size: 28px;
+        margin-right: 15px;
+        color: #7a48da;
+      }
+
+      .challenge-text {
+        h3 {
+          font-size: 1.6rem;
+          font-weight: bold;
+          color: #333;
+          margin-bottom: 5px;
         }
-
-        .challenge-icon {
-          font-size: 28px;
-          margin-right: 15px;
-          color: #7a48da;
-        }
-
-        .challenge-text {
-          h3 {
-            font-size: 1.8rem;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 5px;
-          }
-          p {
-            font-size: 1.2rem;
-            color: #555;
-          }
+        p {
+          font-size: 1rem;
+          color: #555;
         }
       }
     }
+  }
 
-    .opportunity-image {
-      width: 650px;
+  .opportunity-image {
+    width: 50%; /* Şəkilin eni */
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    img {
+      max-width: 100%;
       height: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
+      border-radius: 15px;
+      transition: transform 1.5s ease-in-out;
+    }
 
-      img {
-        max-width: 100%;
-        height: auto;
-        border-radius: 15px;
-        transition: transform 1.5s ease-in-out;
-      }
-
-      &:hover img {
-        transform: rotateY(360deg);
-      }
+    &:hover img {
+      transform: rotateY(360deg);
     }
   }
 
@@ -109,59 +111,58 @@
   .auto-rotate img {
     animation: rotate360 4s linear infinite;
   }
-}
 
-@media (max-width: 1024px) {
-  .opportunity-content {
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;
-  }
-
-  .challenges {
-    width: 100%;
-    align-items: center;
-
-    .challenge-card {
-      width: 80%;
-      max-width: 450px;
-      padding: 30px;
-    }
-  }
-
-  .opportunity-image {
-    width: 100%;
-    max-width: 450px;
-  }
-}
-
-@media (max-width: 768px) {
-  .opportunity-content {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .challenges {
-    width: 100%;
-    align-items: center;
-
-    .challenge-card {
-      width: 90%;
-      max-width: 350px;
-      padding: 25px;
+  @media (max-width: 1024px) {
+    .opportunity-content {
       flex-direction: column;
-      text-align: center;
+      gap: 30px;
+    }
 
-      .challenge-icon {
-        margin-bottom: 10px;
-        margin-right: 0;
+    .challenges {
+      width: 100%;
+      align-items: center;
+
+      .challenge-card {
+        width: 80%;
+        max-width: 450px;
+        padding: 20px;
       }
     }
+
+    .opportunity-image {
+      width: 100%;
+      max-width: 450px;
+    }
   }
 
-  .opportunity-image {
-    width: 80%;
-    max-width: 300px;
+  @media (max-width: 768px) {
+    .opportunity-content {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .challenges {
+      width: 100%;
+      align-items: center;
+
+      .challenge-card {
+        width: 90%;
+        max-width: 350px;
+        padding: 25px;
+        flex-direction: column;
+        text-align: center;
+
+        .challenge-icon {
+          margin-bottom: 10px;
+          margin-right: 0;
+        }
+      }
+    }
+
+    .opportunity-image {
+      width: 80%;
+      max-width: 300px;
+    }
   }
 }
