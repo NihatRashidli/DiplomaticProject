@@ -66,7 +66,7 @@ const Register = () => {
           <h3>Register</h3>
 
           <div className="form-group">
-            <label htmlFor="image">Identification Card</label>
+            <label htmlFor="image">Profile Photo</label>
             <input
               type="file"
               id="image"

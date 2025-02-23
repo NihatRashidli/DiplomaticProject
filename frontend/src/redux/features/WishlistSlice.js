@@ -23,11 +23,6 @@ export const wishlistSlice = createSlice({
         );
       }
     },
-    // deleteWishlist: (state, action) => {
-    //   state.wishlist = state.wishlist.filter(
-    //     (item) => item._id !== action.payload
-    //   );
-    // },
   },
 });
 

@@ -5,7 +5,7 @@ import "./DocumentStorage.scss";
 import {
   fetchDocuments,
   uploadDocument,
-  deleteDocument, // 🔹 Yeni əlavə etdik
+  deleteDocument,
 } from "../../redux/features/documentSlice";
 
 const DocumentStorage = () => {

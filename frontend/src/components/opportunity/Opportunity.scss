@@ -28,18 +28,18 @@
 
   .opportunity-content {
     display: flex;
-    justify-content: space-between; /* Sabit aralıq əlavə edirik */
-    flex-wrap: wrap; /* Flexbox-u bükürük */
-    gap: 30px; /* Kartlar arasında boşluq */
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
     align-items: flex-start;
-    justify-content: center; /* Kartları ortalayırıq */
+    justify-content: center;
   }
 
   .challenges {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    width: 100%; /* Çox kiçik ekranlarda 100% genişlik */
+    width: 500px;
     align-items: center;
 
     .challenge-card {
@@ -50,7 +50,7 @@
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       padding: 20px 40px;
       flex-basis: 100%;
-      max-width: 350px; /* Kartların maksimal eni */
+      max-width: 350px;
       text-align: left;
       transition: transform 0.3s ease;
 
@@ -80,7 +80,7 @@
   }
 
   .opportunity-image {
-    width: 50%; /* Şəkilin eni */
+    width: 50%;
     height: auto;
     display: flex;
     align-items: center;

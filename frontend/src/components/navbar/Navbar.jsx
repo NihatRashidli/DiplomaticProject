@@ -98,7 +98,6 @@ const Navbar = () => {
               </li>
             )}
 
-            {/* 🔹 Profil və Auth düymələri */}
             {user ? (
               <>
                 <li className="navlist-item">

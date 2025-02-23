@@ -36,9 +36,8 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // ✅ **İlk user admin olsun**
     const userCount = await User.countDocuments();
-    const role = userCount === 0 ? "admin" : "user"; // İlk user admin olacaq
+    const role = userCount === 0 ? "admin" : "user";
 
     const newUser = new User({
       image: imageUrl,
@@ -46,15 +45,13 @@ export const register = async (req, res) => {
       surname,
       email,
       password: hashedPassword,
-      role, // Admin və ya user
+      role,
     });
 
     await newUser.save();
 
-    // ✅ Email təsdiqləmə üçün token yaradılır
     const jwtToken = generateToken(newUser._id, res);
 
-    // ✅ Email təsdiqləmə linki
     const confirmLink = `${process.env.CLIENT_LINK}/verify?token=${jwtToken}`;
 
     recieveMail(newUser, confirmLink);
@@ -70,16 +67,14 @@ export const register = async (req, res) => {
 
 export const verifyEmail = async (req, res) => {
   try {
-    const { token } = req.query; // URL-dən tokeni al
+    const { token } = req.query;
 
     if (!token) {
       return res.status(400).json({ message: "Token missing" });
     }
 
-    // ✅ Tokeni yoxla
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // ✅ İstifadəçini tap və təsdiqlə
     const updatedVerify = await user.findByIdAndUpdate(
       { _id: decoded.id },
       { isVerified: true },
@@ -110,7 +105,6 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Email or password is wrong" });
     }
 
-    // ✅ Token yaradılır və cookie-ə yazılır
     generateToken(existUser._id, res);
 
     return res.status(200).json({

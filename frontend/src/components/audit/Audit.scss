@@ -84,7 +84,6 @@
   }
 }
 
-// 🔹 **1024px və aşağıda statistikalar alt-alta düzüləcək**
 @media (max-width: 1024px) {
   .audit-stats {
     flex-direction: column;
@@ -99,7 +98,6 @@
   }
 }
 
-// 🔹 **768px və aşağıda hər şey tam sütun olacaq**
 @media (max-width: 768px) {
   .audit-stats {
     flex-direction: column;
@@ -108,7 +106,7 @@
   }
 
   .audit-stats .stat h2 {
-    font-size: 5rem; // Kiçik ekran üçün font ölçüsünü azaltdım.
+    font-size: 5rem;
   }
 
   .audit-cards {

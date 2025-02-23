@@ -6,7 +6,7 @@
   background: linear-gradient(to bottom, #eef2f3, #ffffff);
 }
 
-/* ✅ First olan div */
+
 .video-container-first {
   display: flex;
   align-items: center;
@@ -24,7 +24,7 @@
   }
 }
 
-/* ✅ Second olan div */
+
 .video-container-second {
   display: flex;
   align-items: center;
@@ -42,7 +42,7 @@
   }
 }
 
-/* Video və yazılar */
+
 .video {
   width: 60%;
   border-radius: 15px;
@@ -98,7 +98,7 @@
   }
 }
 
-/* 🔹 **1024px və aşağısında first və second üçün fərqli qaydalar tətbiq olunur!** */
+
 @media (max-width: 1024px) {
   /* ✅ First div */
   .video-container-first {
@@ -107,7 +107,6 @@
     padding: 1.5rem;
   }
 
-  /* ✅ Second div */
   .video-container-second {
     flex-direction: column;
     text-align: center;
@@ -124,13 +123,12 @@
   }
 }
 
-/* 🔹 **768px və aşağısında first və second üçün fərqli qaydalar!** */
+
 @media (max-width: 768px) {
   .video-section {
     padding: 2rem 1rem;
   }
 
-  /* ✅ First div */
   .video-container-first {
     flex-direction: column;
     align-items: center;
@@ -139,7 +137,6 @@
     padding: 1rem;
   }
 
-  /* ✅ Second div */
   .video-container-second {
     flex-direction: column;
     align-items: center;
